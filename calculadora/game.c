@@ -55,7 +55,8 @@ int main(void)
             tmp->op == NULL;
         }
         else if (caractere_digitado == '+' || caractere_digitado == '-' || // OPERACION
-            caractere_digitado == '*' || caractere_digitado == '/') 
+            caractere_digitado == '*' || caractere_digitado == '/' || 
+            caractere_digitado == '(' || caractere_digitado == ')') 
         {
             tmp->op = malloc(sizeof(char));
             if (tmp->op) return 1;
@@ -64,8 +65,9 @@ int main(void)
             tmp->number == NULL;
         }
 
-        else if(isalpha(caractere_digitado) != 0)
+        else if(isalpha(caractere_digitado) != 0 || caractere_digitado == ' ')
         {
+            free(tmp);
             continue;
         }
         
@@ -79,24 +81,11 @@ int main(void)
             usuario = tmp;
         }
         else
-        {
-            usuario->direita = tmp;
+        {  
+            tmp->direita = NULL;  // entra dentro do nov e deixa como terminador null      
+            usuario->esquerda = usuario; // salva o de tras    
+            usuario->direita = tmp; // aponta pro novo
             usuario = tmp;
-            tmp->direita = NULL;  
         }
-
-        
-        for(type_text *atual = usuario->inicio; atual != NULL; atual = atual->direita)
-        {
-
-            char buffer = atual->number;
-            if (isdigit(buffer) != 0)
-            {
-                double *numeros = malloc(sizeof(double));
-            }
-        }
-    }
-
-
 
 }
