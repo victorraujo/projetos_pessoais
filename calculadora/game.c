@@ -22,10 +22,48 @@ char* save_string(void)
 }
 
 
+typedef struct type_text
+{
+    char text;
+    
+ // metadores
+    type_text *inicio;
+    type_text *esquerda;
+    type_text *direita;
+} type_text;
+
 
 
 int main(void)
 {
+    type_text* usuario = NULL;
 
-    char* usuario = save_string()
+    int caractere_digitado = 0; // vaeriavel de ajuda
+    while ((caractere_digitado = getchar()) !='\n' && caractere_digitado != EOF)
+    {
+        type_text* tmp = malloc(sizeof(type_text));
+        if (tmp == NULL) return 1;
+
+        tmp->text = caractere_digitado;
+        
+
+        if (usuario == NULL)
+        {
+            tmp->inicio = tmp;
+            tmp->direita = tmp;
+            tmp->esquerda = NULL;
+            usuario = tmp;
+        }
+        else
+        {
+            usuario->direita = tmp;
+            usuario = tmp;    
+        }
+
+
+        
+    }
+
+
+
 }
