@@ -49,11 +49,11 @@ int main(void)
         {
             tmp->number = malloc(sizeof(caractere_digitado));
             if (tmp->number == NULL) return 1;
-
-             
+   
             *tmp->number = (caractere_digitado - '0'); //The number zero is worth 48.
             tmp->op == NULL;
         }
+
         else if (caractere_digitado == '+' || caractere_digitado == '-' || // OPERACION
             caractere_digitado == '*' || caractere_digitado == '/' || 
             caractere_digitado == '(' || caractere_digitado == ')') 
