@@ -24,7 +24,8 @@ char* save_string(void)
 
 typedef struct type_text
 {
-    char text;
+    char *op;
+    int number;
     
  // metadores
     type_text *inicio;
@@ -44,24 +45,51 @@ int main(void)
         type_text* tmp = malloc(sizeof(type_text));
         if (tmp == NULL) return 1;
 
-        tmp->text = caractere_digitado;
+        if (isdigit(caractere_digitado) != 0)
+        {
+            tmp->number = caractere_digitado;
+            
+        }
+        else if (caractere_digitado == '+' || caractere_digitado == '-' || 
+            caractere_digitado == '*' || caractere_digitado == '/') 
+        {
+            tmp->op = caractere_digitado;
+        }
+
+        else if(isalpha(caractere_digitado) != 0)
+        {
+            continue;
+        }
+
+
+        tmp->number = caractere_digitado;
         
 
         if (usuario == NULL)
         {
             tmp->inicio = tmp;
             tmp->direita = tmp;
+            tmp->direita->direita = NULL;
             tmp->esquerda = NULL;
             usuario = tmp;
         }
         else
         {
             usuario->direita = tmp;
-            usuario = tmp;    
+            usuario = tmp;
+            tmp->direita = NULL;  
         }
 
-
         
+        for(type_text *atual = usuario->inicio; atual != NULL; atual = atual->direita)
+        {
+
+            char buffer = atual->number;
+            if (isdigit(buffer) != 0)
+            {
+                double *numeros = malloc(sizeof(double));
+            }
+        }
     }
 
 
