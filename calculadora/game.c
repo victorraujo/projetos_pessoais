@@ -25,7 +25,7 @@ char* save_string(void)
 typedef struct type_text
 {
     char *op;
-    int number;
+    int *number;
     
  // metadores
     type_text *inicio;
@@ -45,24 +45,29 @@ int main(void)
         type_text* tmp = malloc(sizeof(type_text));
         if (tmp == NULL) return 1;
 
-        if (isdigit(caractere_digitado) != 0)
+        if (isdigit(caractere_digitado) != 0) // NUMBERS
         {
-            tmp->number = caractere_digitado;
-            
+            tmp->number = malloc(sizeof(caractere_digitado));
+            if (tmp->number == NULL) return 1;
+
+             
+            *tmp->number = (caractere_digitado - '0'); //The number zero is worth 48.
+            tmp->op == NULL;
         }
-        else if (caractere_digitado == '+' || caractere_digitado == '-' || 
+        else if (caractere_digitado == '+' || caractere_digitado == '-' || // OPERACION
             caractere_digitado == '*' || caractere_digitado == '/') 
         {
-            tmp->op = caractere_digitado;
+            tmp->op = malloc(sizeof(char));
+            if (tmp->op) return 1;
+
+            *tmp->op = caractere_digitado;
+            tmp->number == NULL;
         }
 
         else if(isalpha(caractere_digitado) != 0)
         {
             continue;
         }
-
-
-        tmp->number = caractere_digitado;
         
 
         if (usuario == NULL)
