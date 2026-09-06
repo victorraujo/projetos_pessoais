@@ -17,7 +17,7 @@ typedef struct type_text
 
 int main(void)
 {
-    type_text* usuario = NULL;
+     type_text* usuario = NULL;
      int caractere_digitado = 0; // vaeriavel de ajuda
      int novo_numero        = 0;
      double acumular        = 0;
@@ -40,70 +40,85 @@ int main(void)
             caractere_digitado == '(' || caractere_digitado == ')') 
         {
             tem_numero = false;
-            if (tmp->op == NULL) return 1;
-
-            *tmp->op    = caractere_digitado;
-            tmp->number = NULL;
-            
         }
 
         else if(isalpha(caractere_digitado) != 0 || caractere_digitado == ' ')
         {
             continue;
         }
+        
+        // eh operador
 
         if (!tem_numero)
         {
             type_text* tmp = malloc(sizeof(type_text));  // ajeitar || escopo
             if (tmp == NULL) return 1;
-
+            
+            
             tmp->number = malloc(sizeof(double));
             tmp->op     = malloc(sizeof(char));
-
-            if (tmp->number == NULL && tmp->op == NULL) return 1;
-
-            tmp->number = acumular;
-            acumular    = 0;
-
-            tmp->op = caractere_digitado; 
+            if (tmp->number == NULL || tmp->op == NULL) return 1;
             
+            *tmp->number = 0;
             
-        }
-        if (!tem_numero)
-        {
-            if (usuario == NULL)
+            *tmp->op = caractere_digitado;
+            *tmp->esquerda->number = acumular;
+            acumular = 0;
+            
+            if (!tem_numero)
             {
-                tmp->inicio   = tmp;
-                tmp->direita  = NULL;
-                tmp->direita  = NULL;
-                tmp->esquerda = NULL;
-                usuario = tmp;
-            }
-            else
-            {  
-                tmp->direita     = NULL;  // entra dentro do nó e deixa como terminador null      
-                tmp->esquerda    = usuario; // salva o de tras    
-                usuario->direita = tmp; // apontar pro novo
-                usuario          = tmp;
+                if (usuario == NULL)
+                {
+                    tmp->inicio   = tmp;
+                    tmp->direita  = NULL;
+                    tmp->direita  = NULL;
+                    tmp->esquerda = NULL;
+                    usuario       = tmp;
+                }
+                else
+                {  
+                    tmp->direita     = NULL;  // entra dentro do nó e deixa como terminador null      
+                    tmp->esquerda    = usuario; // salva o de tras    
+                    usuario->direita = tmp; // apontar pro novo
+                    usuario          = tmp;
+                }
             }
         } 
     }
-    type_text *sensor  = usuario->inicio;
-    type_text*start_op = NULL;
+    
     double valor_esquerda;
-    double valor_direta;
+    double valor_direita;
     double resultado;
-
-
-    while(sensor != NULL)
+    
+    
+    for(type_text* atual = usuario->inicio; atual != NULL; atual = atual->direita)
     {
-        if(sensor != NULL && sensor->op == '*' || sensor->op == '/')
+        
+        if (atual->op != NULL)
         {
-            type_text *inicio_op = sensor;
-            while(inicio_op->op == NULL)
+            valor_esquerda = 0;
+            valor_direita  = 0;
+          
+            if(atual->op == '*' || atual->op == '/')
             {
                 
-                inicio_op->direita;
+                if(atual->op == '*')
+                {
+                   valor_esquerda = *atual->esquerda->number;
+                   if (atual->direita->op != NULL)
+                   {
+                       valor_direita = *atual->direita->number;
+                   }
+                   resultado = valor_esquerda * valor_direita;
+                }
+                if(atual->op == '/')
+                {
+                   valor_esquerda = *atual->esquerda->number;
+                   if (atual->direita->op != NULL)
+                   {
+                       valor_direita = *atual->direita->number;
+                   }
+                }
             }
         }
     }
