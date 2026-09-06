@@ -40,9 +40,6 @@ int main(void)
             caractere_digitado == '(' || caractere_digitado == ')') 
         {
             tem_numero = false;
-            
-
-            tmp->op = malloc(sizeof(char));
             if (tmp->op == NULL) return 1;
 
             *tmp->op    = caractere_digitado;
@@ -57,7 +54,7 @@ int main(void)
 
         if (!tem_numero)
         {
-            type_text* tmp = malloc(sizeof(type_text));
+            type_text* tmp = malloc(sizeof(type_text));  // ajeitar || escopo
             if (tmp == NULL) return 1;
 
             tmp->number = malloc(sizeof(double));
