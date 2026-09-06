@@ -9,7 +9,7 @@ typedef struct type_text
     char *op;
     double *number;
 
-    // metadores
+   // -----METADORES-------------
     struct type_text *inicio;
     struct type_text *esquerda;
     struct type_text *direita;
@@ -17,27 +17,27 @@ typedef struct type_text
 
 int main(void)
 {
-    type_text *usuario = NULL;
+    type_text *usuario     = NULL;
     int caractere_digitado = 0; // vaeriavel de ajuda
-    int novo_numero = 0;
-    double acumular = 0;
-    bool tem_numero = false; // flag
+    int novo_numero        = 0;
+    double acumular        = 0;
+    bool tem_numero        = false; // flag
 
-    while ((caractere_digitado = getchar()) != '\n' && caractere_digitado != EOF)
+    while ((caractere_digitado = getchar()) != '\n' && caractere_digitado != EOF) // get usuario promt text
     {
-        if (isdigit(caractere_digitado) != 0) // NUMBERS
+        if (isdigit(caractere_digitado) != 0)             // and NUMBERS
         {
             int novo_numero = (caractere_digitado - '0'); // The number zero is worth 48.
 
             acumular = (acumular * 10) + novo_numero;
-            tem_numero = true;
+            tem_numero = true;                            // flag false
         }
 
         else if (caractere_digitado == '+' || caractere_digitado == '-' || // OPERACION
                  caractere_digitado == '*' || caractere_digitado == '/' ||
                  caractere_digitado == '(' || caractere_digitado == ')')
         {
-            tem_numero = false;
+            tem_numero = false; 
         }
 
         else if (isalpha(caractere_digitado) != 0 || caractere_digitado == ' ')
@@ -45,47 +45,56 @@ int main(void)
             continue;
         }
 
-        // eh operador
+        // AND OPERATOR
 
         if (!tem_numero)
         {
-            type_text *tmp = malloc(sizeof(type_text)); // ajeitar || escopo
-            if (tmp == NULL)
-                return 1;
+            type_text *tmp = malloc(sizeof(type_text));
+            if (tmp == NULL) return 1;
 
             tmp->number = malloc(sizeof(double));
             tmp->op = malloc(sizeof(char));
-            if (tmp->number == NULL || tmp->op == NULL)
-                return 1;
+            if (tmp->number == NULL || tmp->op == NULL) return 1;
+            
 
-            *tmp->number = 0;
-
-            *tmp->op = caractere_digitado;
-            *tmp->esquerda->number = acumular;
-            acumular = 0;
-
-            if (!tem_numero)
+            if (usuario == NULL)
             {
-                if (usuario == NULL)
-                {
-                    tmp->inicio = tmp;
-                    tmp->direita = NULL;
-                    tmp->direita = NULL;
-                    tmp->esquerda = NULL;
-                    usuario = tmp;
-                }
-                else
-                {
-                    tmp->direita = NULL;     // entra dentro do nó e deixa como terminador null
-                    tmp->esquerda = usuario; // salva o de tras
-                    usuario->direita = tmp;  // apontar pro novo
-                    usuario = tmp;
-                }
+                // ADDING NODE LINKS
+                tmp->inicio   = tmp;
+                tmp->direita  = NULL;
+                tmp->direita  = NULL;
+                tmp->esquerda = NULL;
+                usuario = tmp;
+
+                // ASSIGNING NODE NUMBERS
+                tmp->number = NULL; // // theres's nothing there.
+                *tmp->op = caractere_digitado;
+                
+                
+            }
+            else
+            {
+                tmp->direita     = NULL;     // entra dentro do nó e deixa como terminador null
+                tmp->esquerda    = usuario; // salva o de tras
+                usuario->direita = tmp;  // apontar pro novo
+                usuario = tmp;
+
+                // ASSIGNING NODE NUMBERS 
+                tmp->number = NULL; // there's nothing there.
+                *tmp->esquerda->number = acumular;
+                acumular = 0;
             }
         }
     }
+    if (acumular != 0) // absolute genius
+    {
+        usuario->esquerda->number = acumular;
+        acumular = 0;
+    }
+    
 
-    double valor_esquerda;
+
+    double valor_esquerda; 
     double valor_direita;
     double resultado;
 
