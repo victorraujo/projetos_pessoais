@@ -311,4 +311,6 @@ int main(void)
             contador++;
         }
     }
+
+    return 0;
 }
