@@ -27,7 +27,7 @@ typedef struct ods_status
 typedef struct
 {
     char *prompt;
-    int tamanho;
+    size_t tamanho;
 
 } status_usuario;
 
@@ -101,25 +101,24 @@ int main(void)
         // zeramento
         tmp_ods->ods_nome = NULL;
         tmp_ods->ods_numero = 0;
-        tmp_ods->tamanho = 0;
 
         switch (contador + 1)
         {
         case 1:
 
-            tmp_ods->ods_nome = criacao_textual("erradicação da Pobreza");
+            tmp_ods->ods_nome = criacao_textual("erradicação da pobreza");
             if (tmp_ods->ods_nome == NULL)
                 return 1;
             break;
 
         case 2:
-            tmp_ods->ods_nome = criacao_textual("fome Zero e agricultura sustentável");
+            tmp_ods->ods_nome = criacao_textual("fome zero e agricultura sustentável");
             if (tmp_ods->ods_nome == NULL)
                 return 1;
             break;
 
         case 3:
-            tmp_ods->ods_nome = criacao_textual("saúde e bem-estar");
+            tmp_ods->ods_nome = criacao_textual("saúde e bem estar");
             if (tmp_ods->ods_nome == NULL)
                 return 1;
             break;
@@ -131,19 +130,19 @@ int main(void)
             break;
 
         case 5:
-            tmp_ods->ods_nome = criacao_textual("igualdade de gênero ");
+            tmp_ods->ods_nome = criacao_textual("igualdade de gênero");
             if (tmp_ods->ods_nome == NULL)
                 return 1;
             break;
 
         case 6:
-            tmp_ods->ods_nome = criacao_textual("água Potável e saneamento");
+            tmp_ods->ods_nome = criacao_textual("água potável e saneamento");
             if (tmp_ods->ods_nome == NULL)
                 return 1;
             break;
 
         case 7:
-            tmp_ods->ods_nome = criacao_textual("energia Limpa e acessível");
+            tmp_ods->ods_nome = criacao_textual("energia limpa e acessível");
             if (tmp_ods->ods_nome == NULL)
                 return 1;
             break;
@@ -179,7 +178,7 @@ int main(void)
             break;
 
         case 13:
-            tmp_ods->ods_nome = criacao_textual("Ação contra a mudança global do clima");
+            tmp_ods->ods_nome = criacao_textual("ação contra a mudança global do clima");
             if (tmp_ods->ods_nome == NULL)
                 return 1;
             break;
@@ -238,11 +237,6 @@ int main(void)
 
     while (true)
     {
-
-        printf("\n===================================================\n");
-        printf("     🎮 INICIANDO O DESAFIO DAS 17 ODS            \n");
-        printf("===================================================\n\n");
-
         printf("s = continue\n"
                "n = parar\n");
 
@@ -251,6 +245,7 @@ int main(void)
         {
             return 2;
         }
+        
         if (strcmp(usuario.prompt, "n") == 0 || strcmp(usuario.prompt, "N") == 0)
         {
             free(usuario.prompt);
@@ -260,6 +255,11 @@ int main(void)
         free(usuario.prompt);
         usuario.tamanho = 0;
 
+
+        clear();
+        printf("\n===================================================\n");
+        printf("     🎮 INICIANDO O DESAFIO DAS 17 ODS            \n");
+        printf("===================================================\n\n");
         ods_status *sensor = inicio;
 
         #ifdef _WIN32 // windows 2 segundos
@@ -272,11 +272,11 @@ int main(void)
 
         while (contador < MAX_ODS)
         {
-            printf("qual e a ods [%d]", contador);
+            printf("qual e a ods [%d]\n", contador+1);
 
             cstring(&usuario.prompt, &usuario.tamanho);
 
-            //           DEIXA STRING MAIUSCULO
+            //           DEIXA STRING MINUSCULA
             for (int i = 0; usuario.prompt[i] != '\0'; i++)
             {
                 usuario.prompt[i] = tolower(usuario.prompt[i]);
@@ -285,15 +285,17 @@ int main(void)
             if (strcmp(usuario.prompt, sensor->ods_nome) == 0)
             {
                 // ACERTOU
+                printf("\n--------------\n");
                 printf("RESULTADO = ✅\n");
                 printf("ODS:\n"
-                        "%d, %s\n\n",
+                        "%d, %s\n",
                         sensor->ods_numero, sensor->ods_nome);
+                printf("--------------\n");
             }
             else
             {
                 // ERROU E FINALIZA
-                printf("RESULTADO = ❌\n");
+                printf("\nRESULTADO = ❌\n");
                 printf("ODS:\n"
                        "%d, %s\n\n",
                         sensor->ods_numero, sensor->ods_nome);
