@@ -319,12 +319,13 @@ int main(void)
     while(true)
     {
         proximo = atual->direita;
+        free(atual->text);
+        free(atual);
+
         if (proximo == NULL)
         {
             break;
         }
-        free(atual->text);
-        free(atual);
 
         atual = proximo;
     }
