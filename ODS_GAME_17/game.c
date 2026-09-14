@@ -295,10 +295,12 @@ int main(void)
             else
             {
                 // ERROU E FINALIZA
+                printf("\n--------------\n");
                 printf("\nRESULTADO = ❌\n");
                 printf("ODS:\n"
                        "%d, %s\n\n",
                         sensor->ods_numero, sensor->ods_nome);
+                printf("--------------\n");
             }
             //   LIBERAR
             free(usuario.prompt);
