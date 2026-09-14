@@ -313,6 +313,21 @@ int main(void)
             contador++;
         }
     }
+    //  LIBERAÇÃO DA MEMORIA ALLOCADA
+    status_ods *atual = inicio;
+    status_ods *proximo = NULL;
+    while(true)
+    {
+        proximo = atual->direita;
+        if (proximo == NULL)
+        {
+            break;
+        }
+        free(atual->text);
+        free(atual);
+
+        atual = proximo;
+    }
 
     return 0;
 }
