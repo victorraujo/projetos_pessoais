@@ -314,8 +314,8 @@ int main(void)
         }
     }
     //  LIBERAÇÃO DA MEMORIA ALLOCADA
-    status_ods *atual = inicio;
-    status_ods *proximo = NULL;
+    ods_status *atual = inicio;
+    ods_status *proximo = NULL;
     while(true)
     {
         proximo = atual->direita;
