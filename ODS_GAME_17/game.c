@@ -1,3 +1,7 @@
+
+// acerte todas as ods!!
+
+
 #include <stdio.h>
 #include <stdlib.h>  // malloc
 #include <stdbool.h> // true e false
@@ -80,6 +84,29 @@ void cstring(char **ptr, size_t *size)
     //----------------------------------
 }
 
+// LIBERAR MEMORIA DO MODULO DE ODS
+void liberar_ods(ods_status *ods)
+{
+    //  LIBERAÇÃO DA MEMORIA ALLOCADA
+    ods_status *atual = ods;
+    ods_status *proximo = NULL;
+    while(true)
+    {
+        proximo = atual->direita;
+
+        free(atual->ods_nome);
+        free(atual);
+
+        if (proximo == NULL)
+        {
+            break;
+        }
+
+        atual = proximo;
+    }
+    return;
+}
+
 void clear(void)
 {
     printf("\033[H\033[J");
@@ -87,7 +114,7 @@ void clear(void)
 
 int main(void)
 {
-    struct ods_status *inicio; // inicio da lista
+    ods_status *inicio; // inicio da lista
     ods_status *ods = NULL;
 
     int contador = 0;
@@ -96,8 +123,10 @@ int main(void)
     {
         ods_status *tmp_ods = malloc(sizeof(ods_status));
         if (tmp_ods == NULL)
+        {
+            liberar_ods(inicio);
             return 1; // segurança
-
+        }
         // zeramento
         tmp_ods->ods_nome = NULL;
         tmp_ods->ods_numero = 0;
@@ -243,11 +272,16 @@ int main(void)
         cstring(&usuario.prompt, &usuario.tamanho);
         if (usuario.prompt == NULL)
         {
+            liberar_ods(inicio);
+            free(usuario.prompt);
             return 2;
         }
         
         if (strcmp(usuario.prompt, "n") == 0 || strcmp(usuario.prompt, "N") == 0)
         {
+            liberar_ods(inicio);
+   
+            
             free(usuario.prompt);
             usuario.tamanho = 0;
             break;
@@ -275,6 +309,12 @@ int main(void)
             printf("qual e a ods [%d]\n", contador+1);
 
             cstring(&usuario.prompt, &usuario.tamanho);
+            if (usuario.prompt == NULL)
+            {
+                // SEGURAÇA
+                liberar_ods(inicio);
+                break;
+            }
 
             //           DEIXA STRING MINUSCULA
             for (int i = 0; usuario.prompt[i] != '\0'; i++)
@@ -313,22 +353,8 @@ int main(void)
             contador++;
         }
     }
-    //  LIBERAÇÃO DA MEMORIA ALLOCADA
-    ods_status *atual = inicio;
-    ods_status *proximo = NULL;
-    while(true)
-    {
-        proximo = atual->direita;
-        free(atual->text);
-        free(atual);
-
-        if (proximo == NULL)
-        {
-            break;
-        }
-
-        atual = proximo;
-    }
-
+    
+    liberar_ods(inicio);
+    free(usuario.prompt);
     return 0;
 }
