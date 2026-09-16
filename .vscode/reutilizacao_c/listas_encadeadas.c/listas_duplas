@@ -1,0 +1,34 @@
+
+// 2 metadados um pra direita e um pra esquerda
+
+ods_status *criar_lista_ods(const int max)
+{
+    int contador = 0;
+
+    whihle(contador < max)
+    {
+        ods_status *tmp_ods = malloc(sizeof(ods_status));
+        if (tmp_ods == NULL)
+        {
+            return 1; // segurança
+        }
+        // listas encadeadas
+        if (ods == NULL)
+        {
+            inicio = tmp_ods; // marcar o primeiro elemento
+
+            tmp_ods->esquerda = NULL;
+            tmp_ods->direita = NULL;
+            ods = tmp_ods;
+        }
+        else
+        {
+            ods->direita = tmp_ods;  // apontar para o proximo (TMP_ODS)
+            tmp_ods->esquerda = ods; // apontar para o antigo (ODS)
+            tmp_ods->direita = NULL; // o novo da direita vai apontar  pra nada
+
+            ods = tmp_ods; // andar na lista
+        }
+        contador++;
+    }
+}
