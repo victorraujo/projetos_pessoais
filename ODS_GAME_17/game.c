@@ -240,7 +240,7 @@ int main(void)
         default:
             break;
         }
-        if (tmp->ods_nome == NULL)
+        if (tmp_ods->ods_nome == NULL)
         {
             liberar_ods(inicio);
             return 2;
