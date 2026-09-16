@@ -137,6 +137,7 @@ int main(void)
 
             tmp_ods->ods_nome = criacao_textual("erradicação da pobreza");
             if (tmp_ods->ods_nome == NULL)
+                
                 return 1;
             break;
 
@@ -238,6 +239,11 @@ int main(void)
 
         default:
             break;
+        }
+        if (tmp->ods_nome == NULL)
+        {
+            liberar_ods(inicio);
+            return 2;
         }
         tmp_ods->ods_numero = contador + 1;
 
@@ -353,7 +359,6 @@ int main(void)
             contador++;
         }
     }
-    
     liberar_ods(inicio);
     free(usuario.prompt);
     return 0;
