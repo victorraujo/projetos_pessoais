@@ -136,105 +136,71 @@ int main(void)
         case 1:
 
             tmp_ods->ods_nome = criacao_textual("erradicação da pobreza");
-            if (tmp_ods->ods_nome == NULL)
-                
-                return 1;
             break;
 
         case 2:
             tmp_ods->ods_nome = criacao_textual("fome zero e agricultura sustentável");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 3:
             tmp_ods->ods_nome = criacao_textual("saúde e bem estar");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 4:
             tmp_ods->ods_nome = criacao_textual("educação de qualidade");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 5:
             tmp_ods->ods_nome = criacao_textual("igualdade de gênero");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 6:
             tmp_ods->ods_nome = criacao_textual("água potável e saneamento");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 7:
             tmp_ods->ods_nome = criacao_textual("energia limpa e acessível");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 8:
             tmp_ods->ods_nome = criacao_textual("trabalho decente e crescimento econômico");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 9:
             tmp_ods->ods_nome = criacao_textual("indústria, inovação e infraestrutura");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
+
             break;
 
         case 10:
             tmp_ods->ods_nome = criacao_textual("redução das desigualdades");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 11:
             tmp_ods->ods_nome = criacao_textual("cidades e comunidades sustentáveis");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 12:
             tmp_ods->ods_nome = criacao_textual("consumo e produção responsáveis");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 13:
             tmp_ods->ods_nome = criacao_textual("ação contra a mudança global do clima");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 14:
             tmp_ods->ods_nome = criacao_textual("vida na água");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 15:
             tmp_ods->ods_nome = criacao_textual("vida terrestre");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 16:
             tmp_ods->ods_nome = criacao_textual("paz, justiça e instituições eficazes");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         case 17:
             tmp_ods->ods_nome = criacao_textual("parcerias e meios de implementação");
-            if (tmp_ods->ods_nome == NULL)
-                return 1;
             break;
 
         default:
@@ -243,7 +209,7 @@ int main(void)
         if (tmp_ods->ods_nome == NULL)
         {
             liberar_ods(inicio);
-            return 2;
+            return 1;
         }
         tmp_ods->ods_numero = contador + 1;
 
