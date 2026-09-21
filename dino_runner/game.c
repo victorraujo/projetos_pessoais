@@ -1,22 +1,29 @@
+#include <stdint.h> // uint8_t etc...
+#include <stdlib.h> // srand
 #include <time.h> // time
 #include <windows.h> // Sleep
 #include <stdbool.h> // boleanos
-#include <string.h>
 #include <conio.h> // _kbhit() || _getch()
 #include <stdio.h>
+#include <string.h> // strcpy e memset
+
 // TELA
 #define ALTURA 10
 #define LARGURA 70
 #define ALTURA_MEIO (ALTURA / 2)
 #define LARGURA_MEIO (LARGURA / 2)
 #define DINO_INICIO 11
+// MOB CACTO
+#define CACTO_INICIO  (LARGURA - 2)
+#define CACTO_FIM (LARGURA - 68)
+#define MOB_CACTOS_SPAW 20
 
 typedef struct
 {
     int y;
     int x;
 
-    char dinossauro;
+    char *dinossauro;
 } Dino;
 Dino dino;
 
@@ -25,15 +32,25 @@ typedef struct
     int y;
     int x;
 
-    char personagem;
-} inimigos;
+    char *personagem;
+} Inimigos;
 
-char tela[ALTURA][LARGURA];
+char tela[ALTURA][LARGURA][8];
 
 // organizar e ajeitar tela
 void inicializar()
 {
-    memset(tela, ' ', sizeof(tela));
+    SetConsoleOutputCP(CP_UTF8);
+    
+    // Zera os bytes para nao ter lixo de memoria antes de usar o strcpy
+    memset(tela, 0, sizeof(tela));
+
+    // Preenche com espaço vazio usando string
+    for (int y = 0; y < ALTURA; y++) {
+        for (int x = 0; x < LARGURA; x++) {
+            strcpy(tela[y][x], " ");
+        }
+    }
 
     // BARREIRA DE TODOS OS LADOS
     for (int barreira_coluna = 0; barreira_coluna < ALTURA; barreira_coluna++)
@@ -42,38 +59,54 @@ void inicializar()
         {
             for (int coluna_inteira = 0; coluna_inteira < LARGURA; coluna_inteira++)
             {
-                tela[barreira_coluna][coluna_inteira] = '#';
+                strcpy(tela[barreira_coluna][coluna_inteira], "#");
             }
         }
         else if (barreira_coluna == ALTURA - 1)
         {
             for (int coluna_inteira = 0; coluna_inteira < LARGURA; coluna_inteira++)
             {
-                tela[barreira_coluna][coluna_inteira] = '#';
+                strcpy(tela[barreira_coluna][coluna_inteira], "#");
             }
         }
         else
         {
-            tela[barreira_coluna][0] = '#';
-            tela[barreira_coluna][LARGURA - 1] = '#';
+            strcpy(tela[barreira_coluna][0], "#");
+            strcpy(tela[barreira_coluna][LARGURA - 1], "#");
         }
     }
 
     dino.y = ALTURA - 2; // penultima coisa
     dino.x = DINO_INICIO;
 
-    dino.dinossauro = '@';
-    tela[dino.y][dino.x] = dino.dinossauro;
+    dino.dinossauro = "🦖";
+    strcpy(tela[dino.y][dino.x], dino.dinossauro);
+
+    srand(time(NULL));
 }
 
-// APOIO
+// APOIO 1
 void resetarCursor()
 {
-    // COORD é uma struct simples do Windows que guarda duas variáveis {short X, short Y}
     COORD coord = {0, 0};
-
-    // Coluna 0, Linha 0
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+// APOIO 2
+void esconderCursor(bool desativar) {
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO info;
+    info.dwSize = 100;
+    
+    if (desativar == true)
+    {
+        info.bVisible = FALSE; 
+    }
+    else
+    {
+        info.bVisible = TRUE; 
+    }
+    SetConsoleCursorInfo(consoleHandle, &info);
 }
 
 // EXIBIR TELA
@@ -83,10 +116,14 @@ void display()
     {
         for (int largura = 0; largura < LARGURA; largura++)
         {
-            printf("%c", tela[altura][largura]);
+            printf("%s", tela[altura][largura]);
         }
         printf("\n");
     }
+}
+
+uint8_t sortearSimOuNao(void) {
+    return rand() % 2; 
 }
 
 int main(void)
@@ -95,54 +132,93 @@ int main(void)
 
     bool gameOver = false;
 
+    Inimigos cacto;
+    cacto.y = ALTURA - 2;
+    cacto.x = CACTO_INICIO;
+    cacto.personagem = "🌵";
+    uint8_t spawn_mob = sortearSimOuNao();
+
+    int contador = 0;
+
+    clock_t inicio = clock();
     while (!gameOver)
     {
+        if (contador < MOB_CACTOS_SPAW)
+        {
+            contador++;
+        }
 
         // pula o dino
         if (dino.y < ALTURA - 2)
         {
-            tela[dino.y][dino.x] = ' ';
+            strcpy(tela[dino.y][dino.x], " ");
             dino.y++;
-            tela[dino.y][dino.x] = dino.dinossauro;
+            strcpy(tela[dino.y][dino.x], "🦖");
         }
         if (dino.x > DINO_INICIO)
         {
-            tela[dino.y][dino.x] = ' ';
+            strcpy(tela[dino.y][dino.x], " ");
             dino.x--;
-            tela[dino.y][dino.x] = dino.dinossauro;
-            
+            strcpy(tela[dino.y][dino.x], "🦖");
         }
+
+        // SPAW MOB
+        if (contador >= MOB_CACTOS_SPAW && spawn_mob)
+        {
+            strcpy(tela[cacto.y][cacto.x], " ");
+            cacto.x--;
+            
+            if (cacto.x == CACTO_FIM + 1)
+            {
+                cacto.x = CACTO_INICIO;
+                strcpy(tela[cacto.y][cacto.x], " ");
+                contador = 0;
+            }
+            else 
+            {
+                strcpy(tela[cacto.y][cacto.x], cacto.personagem);
+            }
+        }
+
         if (dino.y == ALTURA - 2)
         {
-
             if (_kbhit())
             {
                 char tecla = _getch();
                 if (tecla == ' ' || tecla == 32)
                 {
-                    tela[dino.y][dino.x] = ' ';
+                    strcpy(tela[dino.y][dino.x], " ");
                     dino.y = dino.y - 4;  
-                    tela[dino.y][dino.x] = dino.dinossauro;
+                    strcpy(tela[dino.y][dino.x], "🦖");
                 }
                 if (dino.x == DINO_INICIO)
                 {
                     if (tecla == 87 || tecla == 119) // teclas W e w
                     {
-                        tela[dino.y][dino.x] = ' ';
+                        strcpy(tela[dino.y][dino.x], " ");
                         dino.x = dino.x + 5;
-                        tela[dino.y][dino.x] = dino.dinossauro;
+                        strcpy(tela[dino.y][dino.x], "🦖");
                     }
+                }
+                // CARACTERE ESPECIAL (CTRL E C)
+                if (tecla == 3)
+                {
+                    gameOver = true;
                 }
             }
         }
+
         // Enquanto existir qualquer tecla presa no buffer..
         while (_kbhit())
         {
             _getch(); 
         }
+        
         resetarCursor();
         display();
-        Sleep(100); // 50 mili || 20 fps
+        esconderCursor(true);
+        Sleep(100); 
     }
+    esconderCursor(false);
     return 0;
 }
