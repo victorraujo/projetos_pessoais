@@ -138,6 +138,19 @@ void display()
         printf("\n");
     }
 }
+void displayGmerOver(char* prompt_texto)
+{
+
+    size_t tamanho = strlen(prompt_texto);
+
+    
+    for (int largura_tela_atual = LARGURA_MEIO - (tamanho + 2), i = 0; largura_tela_atual < LARGURA_MEIO; largura_tela_atual++, i++)
+    {
+        char texto_string[2] =  {prompt_texto[i], '\0'}; // conversao para string
+        strcpy(tela[ALTURA_MEIO][largura_tela_atual], texto_string); // copiar de um e colar do outro
+    }
+    return;
+}
 
 uint8_t sortearSimOuNao(void)
 {
@@ -238,6 +251,14 @@ int main(void)
 
             dino.andar--;
         }
+
+        // GAMER OVER! (caso 1 = encostou no cafto)
+        if (dino.y == cacto.y && dino.x == cacto.x)
+        {
+            displayGmerOver("GAMER OVER!!");
+            gameOver = true;
+            break;
+        }
         //-------------------------------------------------------------------
         
        // 5. LEITURA DO TECLADO
@@ -269,16 +290,16 @@ int main(void)
             _getch();
         }
 
-        if (dino.x == cacto.x)
-        {
-            gameOver = false;
-        }
-
         resetarCursor();
         display();
         esconderCursor(true);
         Sleep(50); // frames
     }
+            resetarCursor();
+        display();
+        esconderCursor(true);
+        Sleep(50); // frames
     esconderCursor(false);
+
     return 0;
 }
