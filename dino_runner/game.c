@@ -12,26 +12,26 @@
 #define LARGURA 40
 #define ALTURA_MEIO (ALTURA / 2)
 #define LARGURA_MEIO (LARGURA / 2)
-
+// BORDA DA COLUNA
+#define COLUNA_BORDA (LARGURA - 3)
 // DINO
 #define DINO_INICIO 11      // coluna
 #define DINO_Y (ALTURA - 2) // altura
 #define DINO_PULO -2
 #define DINO_PULO_MAX (DINO_Y - 4) // 4 blocos de altura
+
 // MOB CACTO
 #define CACTO_INICIO (LARGURA - 2)
-#define CACTO_FIM (LARGURA - 68)
+#define CACTO_FIM (LARGURA - (LARGURA - 2))
 #define MOB_CACTOS_SPAW 20
 
 typedef struct
 {
     int y;
     int x;
-
     // COMANDOS (w corre|| space pula)
+    int andar;
     bool estaPulando;
-    int velocidadeY;
-
     char *dinossauro; // skin
 } Dino;
 Dino dino;
@@ -40,6 +40,9 @@ typedef struct
 {
     int y;
     int x;
+    int andar;
+    bool estaPulando;
+    bool ativado;
     char *personagem;
 } Inimigos;
 
@@ -88,6 +91,9 @@ void inicializar()
 
     dino.y = ALTURA - 2; // penultima coisa
     dino.x = DINO_INICIO;
+
+    dino.estaPulando = false;
+    dino.andar = 0;
 
     dino.dinossauro = "🦖";
     strcpy(tela[dino.y][dino.x], dino.dinossauro);
@@ -148,7 +154,8 @@ int main(void)
     cacto.y = ALTURA - 2;
     cacto.x = CACTO_INICIO;
     cacto.personagem = "🌵";
-    uint8_t spawn_mob = sortearSimOuNao();
+    cacto.ativado = false;
+    uint8_t spawn_mob = 1;
 
     int contador = 0;
 
@@ -157,75 +164,45 @@ int main(void)
     {
         if (contador < MOB_CACTOS_SPAW)
         {
-
             contador++;
         }
+        // SPAW MOB
 
+        if (contador >= MOB_CACTOS_SPAW)
+        {
+            if ((spawn_mob = sortearSimOuNao()) == 0)
+            {
+                contador = 0;
+            }
+            else
+            {
+                cacto.ativado = true;
+                contador = 0;
+            }
+        }
+        if (cacto.ativado == true)
+        {
+            strcpy (tela[cacto.y][cacto.x], "  ");
+            cacto.x--;
+            strcpy (tela[cacto.y][cacto.x], "🌵");
+
+            if (cacto.x == CACTO_FIM)
+            {
+                strcpy (tela[cacto.y][cacto.x], "  ");
+                cacto.x = CACTO_INICIO;
+                cacto.ativado = false;
+            }
+
+        }
+        //----------------------DINO-------------------------------------------------
+
+        // PULO DO DINO E FISICA
         if ((dino.estaPulando == false) && dino.y != DINO_Y)
         {
             strcpy(tela[dino.y][dino.x], "  ");
             dino.y++;
             strcpy(tela[dino.y][dino.x], "🦖");
         }
-
-        // vai pra frente o dino
-
-        if (dino.x > DINO_INICIO)
-        {
-            strcpy(tela[dino.y][dino.x], " ");
-            dino.x--;
-            strcpy(tela[dino.y][dino.x], "🦖");
-        }
-
-        // SPAW MOB
-        if (contador >= MOB_CACTOS_SPAW && spawn_mob)
-        {
-            strcpy(tela[cacto.y][cacto.x], " ");
-            cacto.x--;
-
-            if (cacto.x == CACTO_FIM + 1)
-            {
-                cacto.x = CACTO_INICIO;
-                strcpy(tela[cacto.y][cacto.x], " ");
-                contador = 0;
-            }
-            else
-            {
-                strcpy(tela[cacto.y][cacto.x], cacto.personagem);
-            }
-        }
-
-        if (dino.y == ALTURA - 2)
-        {
-            if (_kbhit())
-            {
-                char tecla = _getch();
-                // PULO (Space)
-                if ((tecla == ' ' || tecla == 32) && dino.estaPulando == false)
-                {
-                    dino.velocidadeY = -2;
-                    dino.estaPulando = true;
-                }
-                // CORRER (W)
-                if (dino.x == DINO_INICIO)
-                {
-                    if (tecla == 87 || tecla == 119) // teclas W e w
-                    {
-                        strcpy(tela[dino.y][dino.x], "  ");
-                        dino.x = dino.x + 5;
-                        strcpy(tela[dino.y][dino.x], "🦖");
-                    }
-                }
-                // CARACTERE ESPECIAL (CTRL E C)
-                if (tecla == 3)
-                {
-                    gameOver = true;
-                }
-            }
-        }
-
-        // IFS DE CARACTERE APERTADO
-
         // Aplica o movimento do pulo/gravidade
         if (dino.estaPulando == true)
         {
@@ -243,16 +220,64 @@ int main(void)
             }
         }
 
-        // Enquanto existir qualquer tecla presa no buffer..
+        // vai pra frente o dino
+
+        if (dino.x > DINO_INICIO)
+        {
+            // fisica pra voltar pra tras
+            strcpy(tela[dino.y][dino.x], "  ");
+            dino.x--;
+            strcpy(tela[dino.y][dino.x], "🦖");
+        }
+
+        if (dino.andar > 0 && dino.x + 4 != LARGURA)
+        {
+            strcpy(tela[dino.y][dino.x], "  ");
+            dino.x = dino.x + 2;
+            strcpy(tela[dino.y][dino.x], "🦖");
+
+            dino.andar--;
+        }
+        //-------------------------------------------------------------------
+        
+       // 5. LEITURA DO TECLADO
+        if (_kbhit())
+        {
+            char tecla = _getch();
+
+            // PULO (Space): Só pula se estiver no chão
+            if ((tecla == ' ' || tecla == 32) && (dino.estaPulando == false) && (dino.y == ALTURA - 2))
+            {
+                dino.estaPulando = true;
+            }
+
+            // CORRER (W): Só corre se Não estiver na borda
+            if ( (dino.x + 4 != LARGURA) && (tecla == 87 || tecla == 119 || tecla == 'W' || tecla == 'w'))
+            {
+                dino.andar = 3;
+            }
+
+            // CTRL + C (Sair do jogo)
+            if (tecla == 3)
+            {
+                gameOver = true;
+            }
+        }
+            // Enquanto existir qualquer tecla presa no buffer..
         while (_kbhit())
         {
             _getch();
         }
 
+        if (dino.x == cacto.x)
+        {
+            gameOver = false;
+        }
+
         resetarCursor();
         display();
         esconderCursor(true);
-        Sleep(100);
+        Sleep(50); // frames
     }
     esconderCursor(false);
     return 0;
