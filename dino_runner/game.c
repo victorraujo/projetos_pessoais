@@ -295,10 +295,8 @@ int main(void)
         esconderCursor(true);
         Sleep(50); // frames
     }
-            resetarCursor();
-        display();
-        esconderCursor(true);
-        Sleep(50); // frames
+    resetarCursor();
+    display();
     esconderCursor(false);
 
     return 0;
