@@ -4,47 +4,64 @@
 #include <windows.h> // Sleep
 #include <stdbool.h> // boleanos
 #include <conio.h>   // _kbhit() || _getch()
-#include <stdio.h>
 #include <string.h> // strcpy e memset
+#include <stdio.h>   // padrão
 
-// TELA
-#define ALTURA 10
-#define LARGURA 40
-#define ALTURA_MEIO (ALTURA / 2)
-#define LARGURA_MEIO (LARGURA / 2)
-// BORDA DA COLUNA
-#define COLUNA_BORDA (LARGURA - 3)
-// DINO
-#define DINO_INICIO 11      // coluna
-#define DINO_Y (ALTURA - 2) // altura
-#define DINO_PULO -2
-#define DINO_PULO_MAX (DINO_Y - 4) // 4 blocos de altura
+//-------------------------DINO---------------------
+#define ALTURA 10                                //| 
+#define LARGURA 35                               //|
+#define ALTURA_MEIO (ALTURA / 2)                 //|
+#define LARGURA_MEIO (LARGURA / 2)               //| 
+#define COLUNA_BORDA (LARGURA - 3)               //| BORDA DA COLUNA 
+//--------------------------------------------------
 
-// MOB CACTO
-#define CACTO_INICIO (LARGURA - 2)
-#define CACTO_FIM (LARGURA - (LARGURA - 2))
-#define MOB_CACTOS_SPAW 20
+//-------------------------DINO-----------------------------
+#define DINO_INICIO 11             // coluna             //|
+#define DINO_Y (ALTURA - 2)        // altura             //|
+#define DINO_PULO -2                                     //|
+#define DINO_PULO_MAX (DINO_Y - 4) // 4 blocos de altura //|
+//----------------------------------------------------------
 
-typedef struct
-{
-    int y;
-    int x;
-    // COMANDOS (w corre|| space pula)
-    int andar;
-    bool estaPulando;
-    char *dinossauro; // skin
-} Dino;
-Dino dino;
+//-------------------------CACTO------------------------------
+#define CACTO_INICIO (LARGURA - 2)                         //|
+#define CACTO_FIM (LARGURA - (LARGURA - 2))                //|
+#define MOB_CACTOS_SPAW 20                                 //|
+//------------------------------------------------------------
 
-typedef struct
-{
-    int y;
-    int x;
-    int andar;
-    bool estaPulando;
-    bool ativado;
-    char *personagem;
-} Inimigos;
+//-------------------------DINO STATUS----------------
+typedef struct                                     //|
+{                                                  //|
+    int y;           // posição y (altura)         //|
+    int x;           // posição x (coluna)         //|
+    // COMANDOS (w corre|| space pula)             //|
+    int andar;                                     //|
+    bool estaPulando;                              //|
+    char *dinossauro; // skin                      //|
+} Dino;                                            //|
+Dino dino;                                         //|
+//----------------------------------------------------
+
+//-------------------------INIMIGOS DO DINO STATUS STATUS--------
+typedef struct                                                //|
+{                                                             //|
+    int y;            // posição y (altura)                   //|
+    int x;            // posição x (coluna)                   //|
+    int andar;        // excluir (nao esta sendo usado)       //|
+    bool estaPulando; // não usado (ainda)                    //|
+    bool ativado;     // esta na tela? (matriz)               //|
+    char *personagem; // eskin                                //|
+} inimigos;                                                   //|
+//---------------------------------------------------------------
+
+//-------------------------DESASTRES DO MAPA STATUS-------------
+typedef struct {                                            //|
+    int y;              // posição y (altura)               //|
+    int x;              // posição x (coluna)               //|
+    bool ativado;       // esta na tela? (matriz)           //|
+    int tempo_aparecer; // tempo pra ele nascer             //|
+    char*personagem;    // eskin                            //|
+} desastres_naturais;                                       //|
+//-------------------------------------------------------------
 
 char tela[ALTURA][LARGURA][8];
 
@@ -157,18 +174,33 @@ uint8_t sortearSimOuNao(void)
     return rand() % 2;
 }
 
+void criando_mobs(inimigos *mob, desastres_naturais *desatre)
+{
+    mob->y = ALTURA - 2;
+    mob->x = CACTO_INICIO;
+    mob->personagem = "🌵";
+    mob->ativado = false;
+
+    desatre->ativado = false;
+    desatre->y = 0;
+    desatre->x = 0;
+    desatre->personagem = "☄️";
+
+}
+
 int main(void)
 {
     inicializar();
 
     bool gameOver = false;
 
-    Inimigos cacto;
-    cacto.y = ALTURA - 2;
-    cacto.x = CACTO_INICIO;
-    cacto.personagem = "🌵";
-    cacto.ativado = false;
     uint8_t spawn_mob = 1;
+    inimigos cacto;
+
+    desastres_naturais meteoro;
+    criando_mobs(&cacto, &meteoro);
+
+    
 
     int contador = 0;
 
@@ -293,7 +325,7 @@ int main(void)
         resetarCursor();
         display();
         esconderCursor(true);
-        Sleep(50); // frames
+        Sleep(70); // frames
     }
     resetarCursor();
     display();
