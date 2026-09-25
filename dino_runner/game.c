@@ -7,6 +7,7 @@
 #include <string.h> // strcpy e memset
 #include <stdio.h>   // padrão
 
+#define MOBS_TOTAIS 2
 //-------------------------DINO---------------------
 #define ALTURA 10                                //| 
 #define LARGURA 35                               //|
@@ -27,6 +28,12 @@
 #define CACTO_FIM (LARGURA - (LARGURA - 2))                //|
 #define MOB_CACTOS_SPAW 20                                 //|
 //------------------------------------------------------------
+
+//-------------------------DESATRE NATURAIS (METEORO)---------
+#define METEORO_SPAW 10                                    //|
+//------------------------------------------------------------
+
+
 
 //-------------------------DINO STATUS----------------
 typedef struct                                     //|
@@ -160,7 +167,6 @@ void displayGmerOver(char* prompt_texto)
 
     size_t tamanho = strlen(prompt_texto);
 
-    
     for (int largura_tela_atual = LARGURA_MEIO - (tamanho + 2), i = 0; largura_tela_atual < LARGURA_MEIO; largura_tela_atual++, i++)
     {
         char texto_string[2] =  {prompt_texto[i], '\0'}; // conversao para string
@@ -168,12 +174,6 @@ void displayGmerOver(char* prompt_texto)
     }
     return;
 }
-
-uint8_t sortearSimOuNao(void)
-{
-    return rand() % 2;
-}
-
 void criando_mobs(inimigos *mob, desastres_naturais *desatre)
 {
     mob->y = ALTURA - 2;
@@ -187,6 +187,22 @@ void criando_mobs(inimigos *mob, desastres_naturais *desatre)
     desatre->personagem = "☄️";
 
 }
+// ou sim ou nao
+uint8_t sortearSimOuNao(void)
+{
+    return rand() % 2;
+}
+// posicao x aleatoria entre 11 e largura total
+uint8_t aleatorio_x()
+{
+    return DINO_INICIO + rand() % (LARGURA - 2);
+}
+//int aleatorio_mob();
+//{
+//    return rand() % MOBS_TOTAIS;
+//}
+
+
 
 int main(void)
 {
@@ -201,10 +217,13 @@ int main(void)
     criando_mobs(&cacto, &meteoro);
 
     
+    // para mobs
+    int mob_atual = 0; // qual objeto para tentar parar o dinossauro
+    int contador  = 0;
 
-    int contador = 0;
-
+    // futuro temporlizador (desativado por enquanto)
     clock_t inicio = clock();
+
     while (!gameOver)
     {
         if (contador < MOB_CACTOS_SPAW)
