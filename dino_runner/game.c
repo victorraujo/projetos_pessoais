@@ -182,7 +182,7 @@ void criando_mobs(inimigos *mob, desastres_naturais *desatre)
     mob->ativado = false;
 
     desatre->ativado = false;
-    desatre->y = 0;
+    desatre->y = 1;
     desatre->x = 0;
     desatre->personagem = "☄️";
 
@@ -193,10 +193,11 @@ uint8_t sortearSimOuNao(void)
     return rand() % 2;
 }
 // posicao x aleatoria entre 11 e largura total
-uint8_t aleatorio_x()
+uint8_t aleatorio_posicao_x()
 {
-    return DINO_INICIO + rand() % (LARGURA - 2);
+    return 11 + (rand() % 23);
 }
+// desativado..
 //int aleatorio_mob();
 //{
 //    return rand() % MOBS_TOTAIS;
@@ -218,14 +219,54 @@ int main(void)
 
     
     // para mobs
-    int mob_atual = 0; // qual objeto para tentar parar o dinossauro
+    //int mob_atual = 0; // qual objeto para tentar parar o dinossauro
     int contador  = 0;
+    int desastres_contador_spawnar_start = 0;
+    int desatres_contador_spawnar = 0;
 
     // futuro temporlizador (desativado por enquanto)
     clock_t inicio = clock();
 
     while (!gameOver)
     {
+        // SPAWNAR METEORO
+        if (desastres_contador_spawnar_start < 50)
+        {
+            desastres_contador_spawnar_start++;
+        }
+        else if (meteoro.ativado == false)
+        {
+            if (desatres_contador_spawnar < 0 && meteoro.ativado == false)
+            {
+                desatres_contador_spawnar++;
+            }
+            else
+            {
+                meteoro.x = aleatorio_posicao_x();
+                meteoro.ativado = true;
+                desatres_contador_spawnar = 0;
+            }
+        }
+        // DESCIDA DO METEORO
+        if (meteoro.ativado == true)
+        {
+            strcpy(tela[meteoro.y][meteoro.x], "  ");
+            meteoro.y++; // desce
+            strcpy(tela[meteoro.y][meteoro.x], "☄️");
+
+            if (meteoro.y == DINO_Y)
+            {
+                meteoro.ativado = false; // caso encoste no chão
+                strcpy(tela[meteoro.y][meteoro.x], "  ");
+
+                // reset status
+                meteoro.y = 1;
+                meteoro.x = DINO_INICIO;
+                meteoro.ativado = false;
+
+            }
+
+        }
         if (contador < MOB_CACTOS_SPAW)
         {
             contador++;
@@ -254,6 +295,7 @@ int main(void)
             {
                 strcpy (tela[cacto.y][cacto.x], "  ");
                 cacto.x = CACTO_INICIO;
+                // reset status
                 cacto.ativado = false;
             }
 
@@ -304,7 +346,7 @@ int main(void)
         }
 
         // GAMER OVER! (caso 1 = encostou no cafto)
-        if (dino.y == cacto.y && dino.x == cacto.x)
+        if ((dino.y == cacto.y && dino.x == cacto.x) || (dino.y == meteoro.y && dino.x == meteoro.x))
         {
             displayGmerOver("GAMER OVER!!");
             gameOver = true;
@@ -344,7 +386,7 @@ int main(void)
         resetarCursor();
         display();
         esconderCursor(true);
-        Sleep(70); // frames
+        Sleep(80); // frames
     }
     resetarCursor();
     display();
