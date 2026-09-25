@@ -184,7 +184,7 @@ void criando_mobs(inimigos *mob, desastres_naturais *desatre)
     desatre->ativado = false;
     desatre->y = 1;
     desatre->x = 0;
-    desatre->personagem = "☄️";
+    desatre->personagem = "☄️ ";
 
 }
 // ou sim ou nao
@@ -252,7 +252,7 @@ int main(void)
         {
             strcpy(tela[meteoro.y][meteoro.x], "  ");
             meteoro.y++; // desce
-            strcpy(tela[meteoro.y][meteoro.x], "☄️");
+            strcpy(tela[meteoro.y][meteoro.x], "☄️ ");
 
             if (meteoro.y == DINO_Y)
             {
@@ -345,8 +345,12 @@ int main(void)
             dino.andar--;
         }
 
-        // GAMER OVER! (caso 1 = encostou no cafto)
-        if ((dino.y == cacto.y && dino.x == cacto.x) || (dino.y == meteoro.y && dino.x == meteoro.x))
+        // GAMER OVER! (caso 1 = encostou no cacto. caso 2 caiu no meteoro)
+
+        bool bateu_no_cacto = ((dino.y == cacto.y) && dino.x == cacto.x || dino.x == cacto.x - 1);
+        bool bateu_no_meteoro = (dino.x == meteoro.x && (meteoro.y == dino.y || meteoro.y == dino.y - 1 || meteoro.y == dino.y + 1)); // hitbox
+
+        if (bateu_no_cacto == true || bateu_no_meteoro)
         {
             displayGmerOver("GAMER OVER!!");
             gameOver = true;
