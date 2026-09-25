@@ -347,7 +347,7 @@ int main(void)
 
         // GAMER OVER! (caso 1 = encostou no cacto. caso 2 caiu no meteoro)
 
-        bool bateu_no_cacto = ((dino.y == cacto.y) && dino.x == cacto.x || dino.x == cacto.x - 1);
+        bool bateu_no_cacto = ((dino.y == cacto.y) && (dino.x == cacto.x || dino.x == cacto.x - 1));
         bool bateu_no_meteoro = (dino.x == meteoro.x && (meteoro.y == dino.y || meteoro.y == dino.y - 1 || meteoro.y == dino.y + 1)); // hitbox
 
         if (bateu_no_cacto == true || bateu_no_meteoro)
