@@ -347,16 +347,24 @@ int main(void)
 
         // GAMER OVER! (caso 1 = encostou no cacto. caso 2 caiu no meteoro)
 
-        bool bateu_no_cacto = ((dino.y == cacto.y) && (dino.x == cacto.x || dino.x == cacto.x - 1));
-        bool bateu_no_meteoro = (dino.x == meteoro.x && (meteoro.y == dino.y || meteoro.y == dino.y - 1 || meteoro.y == dino.y + 1)); // hitbox
+        //----------------------------HITBOXS MOBS (DINOSSAURO)---------------------------------------
+        // posicoes cactos
+        bool y_perto_cacto  = (dino.y == cacto.y);                            // verifica posicao y
+        bool x_perto_cacto  = (dino.x == cacto.x || dino.x - 1 == cacto.x);   // verifica posicao x               
+        bool bateu_no_cacto = (x_perto_cacto && y_perto_cacto);               // resultado final
+        
+        // posicoes meteoros
+        bool y_perto_meteoro  = (dino.y == meteoro.y || dino.y + 1 == meteoro.y || dino.y - 1 == meteoro.y); // verifica posicao y
+        bool x_perto_meteoro  = (dino.x == meteoro.x || dino.x + 1 == meteoro.x || dino.x - 1 == meteoro.x); // verifica posicao x  
+        bool bateu_no_meteoro = (x_perto_meteoro && y_perto_meteoro);                                        // resultado final
 
-        if (bateu_no_cacto == true || bateu_no_meteoro)
+        if (bateu_no_cacto || bateu_no_meteoro) // se algum bateu e game over e sai do loop.
         {
             displayGmerOver("GAMER OVER!!");
             gameOver = true;
             break;
         }
-        //-------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------
         
        // 5. LEITURA DO TECLADO
         if (_kbhit())
