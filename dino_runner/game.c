@@ -33,6 +33,9 @@
 #define METEORO_SPAW 10                                    //|
 //------------------------------------------------------------
 
+#define RELOGIO_INICIO_Y 2
+#define RELOGIO_INICIO_X 4
+
 
 
 //-------------------------DINO STATUS----------------
@@ -174,6 +177,7 @@ void displayGmerOver(char* prompt_texto)
     }
     return;
 }
+
 void criando_mobs(inimigos *mob, desastres_naturais *desatre)
 {
     mob->y = ALTURA - 2;
@@ -208,6 +212,11 @@ uint8_t aleatorio_posicao_x()
 int main(void)
 {
     inicializar();
+    int tempo_vivo = 0;
+    char promptScore[25];
+
+
+
 
     bool gameOver = false;
 
@@ -224,11 +233,9 @@ int main(void)
     int desastres_contador_spawnar_start = 0;
     int desatres_contador_spawnar = 0;
 
-    // futuro temporlizador (desativado por enquanto)
-    clock_t inicio = clock();
-
     while (!gameOver)
     {
+        tempo_vivo++;
         // SPAWNAR METEORO
         if (desastres_contador_spawnar_start < 50)
         {
