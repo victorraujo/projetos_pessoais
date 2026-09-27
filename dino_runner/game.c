@@ -237,7 +237,7 @@ int main(void)
     {
         tempo_vivo++;
         // SPAWNAR METEORO
-        if (desastres_contador_spawnar_start < 50)
+        if (desastres_contador_spawnar_start < 100)
         {
             desastres_contador_spawnar_start++;
         }
