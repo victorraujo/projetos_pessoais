@@ -25,17 +25,7 @@ typedef struct  usuario
 Tipo* token_string(Tipo* expressao, char* token_atual, int ate_token)
 {
     Tipo* tmp_string = malloc(sizeof(Tipo));
-    if (tmp_string == NULL) return 1;
-
-    if (token == NULL)
-    {
-        tmp_string->esquerda = NULL;
-        tmp_string->direita  = NULL;
-
-        tmp_string->numero = 
-    }
-
-    
+    if (tmp_string == NULL) return 1;    
 }
 
 int main(void)
@@ -68,7 +58,7 @@ int main(void)
             || eh_simbolo_mais 
             || eh_simbolo_menos)
             {
-                expressao_inicio = token_string(expressao, percorrer_string, );
+                expressao_inicio = token_string(expressao, percorrer_string);
                 
             }
         
