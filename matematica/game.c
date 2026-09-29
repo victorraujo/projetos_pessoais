@@ -68,8 +68,7 @@ int main(void)
         if (eh_simbolo_mutiplicacao
             || eh_simbolo_barra
             || eh_simbolo_mais
-            || eh_simbolo_menos 
-            || eh_o_fim)
+            || eh_simbolo_menos)
         {
             if (expressao == NULL)
             {
@@ -103,7 +102,7 @@ int main(void)
                 expressao = tmp_expressao; // anda
             }
 
-            tipo* atribute_token  = malloc(sizeof(Tipo));
+            Tipo* atribute_token  = malloc(sizeof(Tipo));
             atribute_token->token = malloc(sizeof(char));
             if (atribute_token == NULL || atribute_token-> == NULL) return 1;
 
@@ -115,6 +114,33 @@ int main(void)
             
             atribute_token->numero = NULL;
             *atribute_token->token = proxima_parte[0];
+        }
+        if (eh_o_fim)
+        {
+            Tipo* tmp_expressao   = malloc(sizeof(Tipo));
+            tmp_expressao->numero = malloc(sizeof(double));
+            if (tmp_expressao == NULL || tmp_expressao->numero == NULL) return 1; // erro de locação
+
+            *tmp_expressao->numero = valor_token;
+            tmp_expressao->token  = NULL;
+
+            valor_token = 0;
+            if (expressao == NULL)
+            {
+                tmp_expressao->esquerda = NULL;
+                tmp_expressao->direita  = NULL;
+
+                expressao        = tmp_expressao;
+                expressao_inicio = expressao;
+            }
+            else
+            {
+                expressao->direita = tmp_expressao;
+                tmp_expressao->esquerda = expressao;
+                tmp_expressao->direita  = NULL;
+                expressao = tmp_expressao;
+            }
+            break;
         }
         // andar
         percorrer_string = proxima_parte;
