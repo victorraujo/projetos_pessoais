@@ -54,55 +54,70 @@ int main(void)
         // strtod transforma em numero e diz onde foi a quebra de linha e ainda envia o local!!
         
         valor_token = strtod(percorrer_string, &proxima_parte);       
-        if (*proxima_parte == '\0')  { break; }
+        
 
-        if (expressao == NULL)
+        //            boleanas para quebra de expressão
+        bool eh_simbolo_mutiplicacao = (*proxima_parte == '*' || toupper(*proxima_parte) == 'X');
+        bool eh_simbolo_barra        = (*proxima_parte == '/');
+        bool eh_simbolo_mais         = (*proxima_parte == '+');
+        bool eh_simbolo_menos        = (*proxima_parte == '-');
+
+        bool eh_o_fim = (*proxima_parte == '\0');
+
+        // caso alguma seja verdade
+        if (eh_simbolo_mutiplicacao
+            || eh_simbolo_barra
+            || eh_simbolo_mais
+            || eh_simbolo_menos 
+            || eh_o_fim)
         {
-            Tipo* tmp_expressao   = malloc(sizeof(Tipo));
-            tmp_expressao->numero = malloc(sizeof(Tipo));
-            if (tmp_expressao == NULL) { return 1; }
+            if (expressao == NULL)
+            {
+                Tipo* tmp_expressao = malloc(sizeof(Tipo));
+                tmp_expressao->numero = malloc(sizeof(double));
+                if(tmp_expressao == NULL || tmp_expressao->numero == NULL) { return 1; }
 
-            // NÓS
-            tmp_expressao->esquerda = NULL;
-            tmp_expressao->direita  = NULL;
-            expressao_inicio = tmp_expressao; // salvar o primeiro nó
+                // NÓS
+                tmp_expressao->esquerda = NULL;
+                tmp_expressao->direita  = NULL;
+                
+                *tmp_expressao->numero = valor_token;
+                tmp_expressao->token   = NULL;
 
-            // atribuição das informações
-            tmp_expressao->token  = NULL;
-            tmp_expressao->numero = valor_token;
+                expressao_inicio = tmp_expressao;
+                expressao = tmp_expressao;
+            }
+            else
+            {
+                Tipo* tmp_expressao = malloc(sizeof(Tipo));
+                tmp_expressao->numero = malloc(sizeof(double));
 
-            expressao = tmp_expressao;
+                expressao->direita = tmp_expressao; // o antigo liga com o novo
 
+                tmp_expressao->esquerda = expressao; // o novo liga com o antigo
+                tmp_expressao->direita  = NULL;
 
-            // para os caracteres (/, +, -, ) e ligar com o proximo proximo nó com numero
-            // considere tmp_expressao agora apenas 'expressao'
+                *tmp_expressao->numero = valor_token;
+                tmp_expressao->token   = NULL;
 
-            Tipo* tmp_tmp_expressao  = malloc(sizeof(Tipo));
-            tmp_tmp_expressao->token = malloc(sizeof(char));
-            if (tmp_tmp_expressao == NULL || tmp_tmp_expressao == NULL) { return 1; }
+                expressao = tmp_expressao; // anda
+            }
 
-            tmp_tmp_expressao->token = *proxima_parte[0]; // adicionar o conteúdo do caractere especial(quebra da expressao)
-            tmp_tmp_expressao->numero = NULL;
+            tipo* atribute_token  = malloc(sizeof(Tipo));
+            atribute_token->token = malloc(sizeof(char));
+            if (atribute_token == NULL || atribute_token-> == NULL) return 1;
 
-            tmp_tmp_expressao->esquerda = expressao;
-            tmp_tmp_expressao->direita  = NULL;
+            expressao->direita = atribute_token;
 
+            atribute_token->esquerda = expressao;
+            atribute_token->direita  = NULL;
 
-            expressao->direita = tmp_tmp_expressao; 
-            expressao = tmp_tmp_expressao; // a expressao agora está no caractere especial
-
-            // fim
+            
+            atribute_token->numero = NULL;
+            *atribute_token->token = proxima_parte[0];
         }
-        else
-        {
-            Tipo* tmp_expressao   = malloc(sizeof(Tipo));
-            tmp_expressao->numero = malloc(sizeof(Tipo));
-
-
-        }
-
-
-
+        // andar
+        percorrer_string = proxima_parte;
     }
 }
 
