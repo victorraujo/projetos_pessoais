@@ -46,29 +46,60 @@ int main(void)
         return 1;
     }
 
-    expressao = malloc(sizeof(Tipo));
-    if (expressao == NULL) return 1;
-
     char* percorrer_string = prompt_texto;
     char* proxima_parte    = NULL;
     double valor_token     = 0;
     while(percorrer_string != NULL)
     {
         // strtod transforma em numero e diz onde foi a quebra de linha e ainda envia o local!!
-        valor_token = strtod(percorrer_string, &proxima_parte);        
-        // boleanas para quebra de expressão
-        bool eh_simbolo_mutiplicacao = (*proxima_parte == '*' || toupper(*proxima_parte) == 'X');
-        bool eh_simbolo_barra        = (*proxima_parte == '/');
-        bool eh_simbolo_mais         = (*proxima_parte == '+');
-        bool eh_simbolo_menos        = (*proxima_parte == '-');
-        // caso alguma seja verdade
-        if (eh_simbolo_mutiplicacao 
-            || eh_simbolo_barra 
-            || eh_simbolo_mais 
-            || eh_simbolo_menos)
-        {
+        
+        valor_token = strtod(percorrer_string, &proxima_parte);       
+        if (*proxima_parte == '\0')  { break; }
 
+        if (expressao == NULL)
+        {
+            Tipo* tmp_expressao = malloc(sizeof(Tipo));
+            tmp_expressao       = malloc(sizeof(Tipo));
+            if (tmp_expressao == NULL) { return 1; }
+
+            // NÓS
+            tmp_expressao->esquerda = NULL;
+            tmp_expressao->direita  = NULL;
+            expressao_inicio = tmp_expressao; // salvar o primeiro nó
+
+            // atribuição das informações
+            tmp_expressao->token  = NULL;
+            tmp_expressao->numero = valor_token;
+
+            expressao = tmp_expressao;
+
+
+            // para os caracteres (/, +, -, ) e ligar com o proximo proximo nó com numero
+            // considere tmp_expressao agora apenas 'expressao'
+
+            Tipo* tmp_tmp_expressao  = malloc(sizeof(Tipo));
+            tmp_tmp_expressao->token = malloc(sizeof(char));
+            if (tmp_tmp_expressao == NULL || tmp_tmp_expressao == NULL) { return 1; }
+
+            tmp_tmp_expressao->token = *proxima_parte[0]; // adicionar o conteúdo do caractere especial(quebra da expressao)
+            tmp_tmp_expressao->numero = NULL;
+
+            tmp_tmp_expressao->esquerda = expressao;
+            tmp_tmp_expressao->direita  = NULL;
+
+
+            expressao->direita = tmp_tmp_expressao; 
+            expressao = tmp_tmp_expressao; // a expressao agora está no caractere especial
+
+            // fim
         }
+        else
+        {
+            
+        }
+
+
+
     }
 }
 
