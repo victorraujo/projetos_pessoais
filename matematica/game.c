@@ -58,8 +58,8 @@ int main(void)
 
         if (expressao == NULL)
         {
-            Tipo* tmp_expressao = malloc(sizeof(Tipo));
-            tmp_expressao       = malloc(sizeof(Tipo));
+            Tipo* tmp_expressao   = malloc(sizeof(Tipo));
+            tmp_expressao->numero = malloc(sizeof(Tipo));
             if (tmp_expressao == NULL) { return 1; }
 
             // NÓS
@@ -95,7 +95,10 @@ int main(void)
         }
         else
         {
-            
+            Tipo* tmp_expressao   = malloc(sizeof(Tipo));
+            tmp_expressao->numero = malloc(sizeof(Tipo));
+
+
         }
 
 
