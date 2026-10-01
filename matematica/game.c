@@ -154,47 +154,42 @@ void converter_em_numero
         return 1;
     while (procurador_de_token != NULL)
     {
-        bool eh_mutiplicação = (procurador_de_token->token == '*' || toupper(procurador_de_token->token) == 'X');
-        bool eh_divisao = (procurador_de_token->token == '/');
+        bool eh_mutiplicacao = (procurador_de_token->token == '*' || toupper(procurador_de_token->token) == 'X');
+        bool eh_divisao      = (procurador_de_token->token == '/');
 
         if (eh_mutiplicacao || eh_divisao)
         {
             // pre status para calculo
-            double numero_esquerda = procurador_de_token->esquerda->numero;
-            double numero_direita = procurador_de_token->direita->numero;
+            procurador_de_token->numero = malloc(sizeof(double));
+            if (procurador_de_token->numero == NULL) return 1;
+
+            double numero_esquerda = *(procurador_de_token->esquerda->numero);
+            double numero_direita  = *(procurador_de_token->direita->numero);
             double resultado = 0;
+  
 
             if (eh_mutiplicação)
             {
-                if (procurador_de_token->esquerda != NULL && procurador_de_token->direita != NULL)
-                {
-                    free(procurador_de_token->token);
-                    procurador_de_token->token = NULL;
-
-                    procurador_de_token->numero = malloc(sizeof(double));
-                    if (procurador_de_token->numero == NULL) return 1;
-
-                    resultado = numero_esquerda * numero_direita;
-                }
+                free(procurador_de_token->token);
+                procurador_de_token->token = NULL;
+                resultado = numero_esquerda * numero_direita;
             }
             if (eh_divisao)
             {
-                if (procurador_de_token->esquerda != NULL && procurador_de_token->direita != NULL)
-                {
-                    free(procurador_de_token->token);
-                    procurador_de_token->token = NULL;
-
-                    procurador_de_token->numero = malloc(sizeof(double));
-                    if (procurador_de_token->numero == NULL) return 1;
-                    resultado = numero_esquerda / numero_direita;
-                }
+                free(procurador_de_token->token);
+                procurador_de_token->token = NULL;
+                resultado = numero_esquerda / numero_direita;
             }
+                //atribui o resultado ->
+                *procurador_de_token->numero = resultado;
+
+
+                // AJEITAR A LISTA!!
+
             //                      PONTEIROS LIGAMENTOS E DESLIGAMENTOS
             if ((procurador_de_token->esquerda->esquerda != NULL && procurador_de_token->direita->direita != NULL)) // caso 1
             {
 
-                //atribui o resultado ->
-                procurador_de_token->numero = resultado;
 
                 //            SINTAXE MAIS FACIL (REALIGAR PONTEIRO APÓS RESOLVER EXPRESSÃO)
                 Tipo* novo_realigamento_dois_tras    = procurador_de_token->esquerda->esquerda;
@@ -207,16 +202,15 @@ void converter_em_numero
                 free(desligamento_ponteiro->direita);
 
                 // RELIGAR OS 2 NÓS DE TRAS E DA FRENTE (esquerda e direita)
-                novo_realigamento_atual->esquerdo = novo_realigamento_dois_tras;
+                novo_realigamento_atual->esquerda = novo_realigamento_dois_tras;
                 novo_realigamento_atual->direita  = novo_realigamento_dois_frente;
 
                 novo_realigamento_dois_tras->direita    = novo_realigamento_atual; // o de tras liga com o da frente
                 novo_realigamento_dois_frente->esquerda = novo_realigamento_atual;
             }
-            else if (procurador_de_token->esquerda != NULL procurador_de_token->direita != NULL) // caso 2
+            else if (procurador_de_token->esquerda != NULL && procurador_de_token->direita != NULL) // caso 2
             {
-                //atribui o resultado ->
-                procurador_de_token->numero = resultado;
+                Tipo* novo_realigamento_atual = procurador_de_token;
                 // DESLIGAR PONTEIRO DOS LADOS
                 Tipo* desligamento_ponteiro = novo_realigamento_atual;
                 free(desligamento_ponteiro->esquerda);
