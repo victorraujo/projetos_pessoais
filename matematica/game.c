@@ -184,7 +184,65 @@ void converter_em_numero
                 *procurador_de_token->numero = resultado;
 
 
-                // AJEITAR A LISTA!!
+            //------------ORGANIZANDO OS PONTEIRO APÓS EXPRESSÃO RESOLVIDA-------------------------------
+            //   
+
+            // ==================== NÓS À ESQUERDA <- ====================
+            if (procurador_de_token->esquerda != NULL)
+            {
+                // existe elementos a frente
+                if (procurador_de_token->esquerda->esquerda != NULL)
+                {
+                    //      SINTAXE MAIS FACIL (REALIGAR PONTEIRO APÓS RESOLVER EXPRESSÃO)
+                    Tipo* novo_realigamento_dois_tras    = procurador_de_token->esquerda->esquerda; // salvei 2 nós a frente
+                    Tipo* novo_realigamento_atual        = procurador_de_token;                     // mudei o nome para facilitar leitura 
+
+                    // DESLIGAR PONTEIRO DO LADO ESQUERDO
+                    Tipo* desligamento_ponteiro = novo_realigamento_atual;
+                    free(desligamento_ponteiro->esquerda);
+
+                    // Religa os ponteiros (Ida e Volta)
+                    novo_realigamento_atual->esquerda    = novo_realigamento_dois_tras;
+                    novo_realigamento_dois_tras->direita = novo_realigamento_atual;  
+                }
+
+                // Se não tem ninguém depois, é o fim da lista
+                else
+                {
+                    free(procurador_de_token->esquerda);
+                    procurador_de_token->esquerda = NULL;
+            
+                }
+            }
+        
+            // ==================== NÓS À DIREITA -> ====================
+           
+            if (procurador_de_token->direita != NULL)
+            {
+                if (procurador_de_token->direita->direita != NULL)
+                {
+                    //      SINTAXE MAIS FACIL (REALIGAR PONTEIRO APÓS RESOLVER EXPRESSÃO)
+                    Tipo* novo_realigamento_dois_frente = procurador_de_token->direita->direita; // salvei 2 nós a frente
+                    Tipo* novo_realigamento_atual       = procurador_de_token;                   // mudei o nome para facilitar leitura           
+
+                    // DESLIGAR PONTEIRO DOS LADOS
+                    Tipo* desligamento_ponteiro = novo_realigamento_atual;
+                    free(desligamento_ponteiro->direita);
+
+                    // Religa os ponteiros (Ida e Volta)
+                    novo_realigamento_atual->direita        = novo_realigamento_dois_frente;
+                    novo_realigamento_dois_frente->esquerda = novo_realigamento_atual;
+                }
+
+                // Se não tem ninguém depois, é o fim da lista
+                else
+                {
+                    free(procurador_de_token->direita);
+                    procurador_de_token->direita = NULL;
+                }
+                
+            }
+             //-----------------------------------------------------------------------
 
             //                      PONTEIROS LIGAMENTOS E DESLIGAMENTOS
             if ((procurador_de_token->esquerda->esquerda != NULL && procurador_de_token->direita->direita != NULL)) // caso 1
