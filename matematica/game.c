@@ -22,17 +22,14 @@ typedef struct usuario
 } Usuario;
  
 // Exemplo de uso:
-// char* meu_texto = input(&meu_ptr, &meu_tamanho);
-char* input(char** text, size_t *size)
+// char* meu_texto = input();
+char* input(void)
 {
-    // pré definição padrão
-    *size = 0;
-    *text = NULL;
     
     // temporarios...
     size_t buffer_text_total = 20;
     size_t buffer_text_atual = 0;
-    char* prompt = malloc(buffer_text * sizeof(char));
+    char* prompt = malloc(buffer_text_total * sizeof(char));
 
     int caractere_atual = 0;
     while((caractere_atual = getchar()) != '\n' && caractere_atual != EOF)
@@ -42,10 +39,9 @@ char* input(char** text, size_t *size)
         {
             char* prompt_tmp;
             buffer_text_total += 20;
-            prompt_tmp = realloc(prompt, buffer_text_total)
+            prompt_tmp = realloc(prompt, buffer_text_total);
             if (prompt_tmp == NULL)
             {
-                *size = buffer_text_atual;
                 return prompt_tmp;
             }
             prompt = prompt_tmp;
@@ -55,11 +51,13 @@ char* input(char** text, size_t *size)
     }
 
     // atribuição final
-    *size = buffer_text_atual;
-    *text  = prompt;
-    (*text)[*size] = '\0';
-
-    return *text;
+      char* prompt_tmp = realloc(prompt, buffer_text_atual + 1);
+      if (prompt_tmp == NULL)
+      {
+        return prompt_tmp;
+      }
+      prompt_tmp[buffer_text_atual] = '\0';
+    return prompt_tmp;
 }
 
 // limpar uma estrutura inteira
@@ -107,10 +105,8 @@ int main(void)
     Tipo *expressao_inicio = NULL;
     Tipo *expressao = NULL;
 
-    char *prompt_texto = NULL;
     size_t buffer = 0;
-
-    prompt_texto = input(&prompt_texto, &buffer); // pedir expressão ao usuario
+    char* prompt_texto = input(); // pedir expressão ao usuario
     if (prompt_texto == NULL)
     {
         return 1;
@@ -228,10 +224,10 @@ int main(void)
         if (elemento_atual->token != NULL)
         {
 
-            bool eh_mutiplicacao = (elemento_atual->token == '*' || toupper(elemento_atual->token) == 'X');
-            bool eh_divisao      = (elemento_atual->token == '/');
+            bool eh_multiplicacao = (*(elemento_atual->token) == '*' || toupper(*(elemento_atual->token)) == 'X'); // desferenciando  o membro
+            bool eh_divisao      = (*(elemento_atual->token) == '/');
 
-            if (eh_mutiplicacao || eh_divisao)
+            if (eh_multiplicacao || eh_divisao)
             {
                 // pre status para calculo
                 double numero_esquerda = 0;
@@ -264,7 +260,7 @@ int main(void)
                 }
     
 
-                if (eh_mutiplicação)
+                if (eh_multiplicacao)
                 {
                     free(elemento_atual->token);
                     elemento_atual->token = NULL;
@@ -274,7 +270,7 @@ int main(void)
                 {
                     free(elemento_atual->token);
                     elemento_atual->token = NULL;
-                    if (*numero_direita == 0)
+                    if (numero_direita == 0)
                     {
                         printf("expressão invalida.\n");
                         return 1;
@@ -307,7 +303,7 @@ int main(void)
                     // Se não tem ninguém depois, é o fim da lista
                     else
                     {
-                        limpar_bloco(&elemento_atual->esquerda)
+                        limpar_bloco(&elemento_atual->esquerda);
                     }
                 }
         
@@ -321,7 +317,7 @@ int main(void)
                         Tipo* novo_realigamento_dois_frente = elemento_atual->direita->direita; // salvei 2 nós a frente          
 
                         // DESLIGAR PONTEIRO DOS LADOS
-                        limpar_bloco(&elemento_atual->esquerda)
+                        limpar_bloco(&elemento_atual->direita);
 
                      // Religa os ponteiros (Ida e Volta)
                         elemento_atual->direita                 = novo_realigamento_dois_frente;
@@ -330,7 +326,7 @@ int main(void)
                     // Se não tem ninguém depois, é o fim da lista
                     else
                     {
-                    limpar_bloco(&elemento_atual->esquerda)
+                    limpar_bloco(&elemento_atual->direita);
                     }
                 }
             }
@@ -345,8 +341,8 @@ int main(void)
     {
         if(elemento_atual->token != NULL)
         {
-            bool eh_simbolo_mais  = (*elemento_atual->token  == '+');
-            bool eh_simbolo_menos = (*elemento_atual->token == '-');
+            bool eh_simbolo_mais  = (*(elemento_atual->token)  == '+');
+            bool eh_simbolo_menos = (*(elemento_atual->token) == '-');
             if (eh_simbolo_mais || eh_simbolo_menos)
             {
                 // pre status para calculo
@@ -414,7 +410,7 @@ int main(void)
                     // Se não tem ninguém depois, é o fim da lista
                     else
                     {
-                        limpar_bloco(&elemento_atual->esquerda)
+                        limpar_bloco(&elemento_atual->esquerda);
                     }
                 }
             }
