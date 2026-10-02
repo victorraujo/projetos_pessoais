@@ -22,16 +22,28 @@ typedef struct usuario
     struct usuario *esquerda;
 } Usuario;
 
-Tipo *token_string(char *token_atual, char *proximo_token, double token_numero)
-{
-    Tipo *tmp_string = malloc(sizeof(Tipo));
-    if (tmp_string == NULL)
-        return 1;
-}
-void converter_em_numero
 
-    int
-    main(void)
+// limpar uma estrutura inteira
+// conceitos:
+// | quando usamos uma função ela cria variaveis temporaria para lidar com as informaçoes
+// | que enviamos para ela. se criarmos **ponteiro ela vai guardar um ponteiro.
+// |_______________PONTEIROS______________________________
+// | bloco = Endereço do ponteiro da main.
+// |*bloco = Endereço da variável real (que está guardado no ponteiro da main).
+// |**bloco = A própria variável / informação real.
+// |____________________________________________________
+// DESFERENCIAR:
+// usamos (*variavel) para dizer: calma, entre primeiro aqui depois acesse o membro dela. 
+// membro : -> (que tambem e um desfereciador)
+void limpar_bloco(Tipo** bloco)
+{
+    if ((*bloco)->numero != NULL) free((*bloco)->numero); // liberar numero 
+    if ((*bloco)->token  != NULL) free((*bloco)->token);   // liberar token
+    free(*bloco);
+    *bloco = NULL;
+}
+
+main(void)
 {
 
     Tipo *expressao_inicio = NULL;
@@ -149,102 +161,120 @@ void converter_em_numero
     free(prompt_texto);
     // achar mutiplicação e divisão (prioridade 2)
 
-    Tipo *procurador_de_token = expressao_inicio;
-    if (procurador_de_token == NULL)
+    Tipo *elemento_atual = expressao_inicio;
+    if (elemento_atual == NULL)
         return 1;
-    while (procurador_de_token != NULL)
+    while (elemento_atual != NULL)
     {
-        bool eh_mutiplicacao = (procurador_de_token->token == '*' || toupper(procurador_de_token->token) == 'X');
-        bool eh_divisao      = (procurador_de_token->token == '/');
+        bool eh_mutiplicacao = (elemento_atual->token == '*' || toupper(elemento_atual->token) == 'X');
+        bool eh_divisao      = (elemento_atual->token == '/');
 
         if (eh_mutiplicacao || eh_divisao)
         {
             // pre status para calculo
-            procurador_de_token->numero = malloc(sizeof(double));
-            if (procurador_de_token->numero == NULL) return 1;
+            double numero_esquerda = 0;
+            double numero_direita  = 0;
+            double resultado       = 0;
 
-            double numero_esquerda = *(procurador_de_token->esquerda->numero);
-            double numero_direita  = *(procurador_de_token->direita->numero);
-            double resultado = 0;
-  
+            // ponteiros renomeados para facilitar leitura
+            Tipo* elemento_frente = elemento_atual->direita;
+            Tipo* elemento_tras   = elemento_atual->esquerda;
+            
+            if (elemento_frente == NULL || elemento_tras == NULL || elemento_atual == NULL) return 1;
+
+            elemento_atual->numero = malloc(sizeof(double));
+            if (elemento_atual->numero == NULL) return 1;
+
+            if (elemento_tras != NULL)
+            {
+
+                if (elemento_tras->numero != NULL) // tratar caso o numero que verificar seja outra coisa alem de numero
+                {
+                   numero_esquerda = *(elemento_tras->numero); // caso seja numero
+                }
+            }
+            if (elemento_frente != NULL)
+            {
+                if (elemento_frente->numero != NULL)  // tratar caso o numero que verificar seja outra coisa alem de numero
+                {
+                    numero_direita  = *(elemento_frente->numero);
+                }   
+            }
+    
 
             if (eh_mutiplicação)
             {
-                free(procurador_de_token->token);
-                procurador_de_token->token = NULL;
+                free(elemento_atual->token);
+                elemento_atual->token = NULL;
                 resultado = numero_esquerda * numero_direita;
             }
             if (eh_divisao)
             {
-                free(procurador_de_token->token);
-                procurador_de_token->token = NULL;
+                free(elemento_atual->token);
+                elemento_atual->token = NULL;
+                if (*numero_direita == 0)
+                {
+                    printf("expressão invalida.");
+                    return 1;
+                }
                 resultado = numero_esquerda / numero_direita;
             }
                 //atribui o resultado ->
-                *procurador_de_token->numero = resultado;
+                *elemento_atual->numero = resultado;
 
 
             //------------ORGANIZANDO OS PONTEIRO APÓS EXPRESSÃO RESOLVIDA-------------------------------
             //   
 
             // ==================== NÓS À ESQUERDA <- ====================
-            if (procurador_de_token->esquerda != NULL)
+            if (elemento_atual->esquerda != NULL)
             {
                 // existe elementos a frente
-                if (procurador_de_token->esquerda->esquerda != NULL)
+                if (elemento_atual->esquerda->esquerda != NULL)
                 {
                     //      SINTAXE MAIS FACIL (REALIGAR PONTEIRO APÓS RESOLVER EXPRESSÃO)
-                    Tipo* novo_realigamento_dois_tras    = procurador_de_token->esquerda->esquerda; // salvei 2 nós a frente
-                    Tipo* novo_realigamento_atual        = procurador_de_token;                     // mudei o nome para facilitar leitura 
+                    Tipo* novo_realigamento_dois_tras    = elemento_atual->esquerda->esquerda; // salvei 2 nós a frente
 
                     // DESLIGAR PONTEIRO DO LADO ESQUERDO
-                    Tipo* desligamento_ponteiro = novo_realigamento_atual;
-                    free(desligamento_ponteiro->esquerda);
+                    limpar_bloco(&elemento_atual->esquerda);
 
                     // Religa os ponteiros (Ida e Volta)
-                    novo_realigamento_atual->esquerda    = novo_realigamento_dois_tras;
-                    novo_realigamento_dois_tras->direita = novo_realigamento_atual;  
+                    elemento_atual->esquerda             = novo_realigamento_dois_tras;
+                    novo_realigamento_dois_tras->direita = elemento_atual;  
                 }
 
                 // Se não tem ninguém depois, é o fim da lista
                 else
                 {
-                    free(procurador_de_token->esquerda);
-                    procurador_de_token->esquerda = NULL;
-            
+                    limpar_bloco(&elemento_atual->esquerda)
                 }
             }
         
             // ==================== NÓS À DIREITA -> ====================
            
-            if (procurador_de_token->direita != NULL)
+            if (elemento_atual->direita != NULL)
             {
-                if (procurador_de_token->direita->direita != NULL)
+                if (elemento_atual->direita->direita != NULL)
                 {
                     //      SINTAXE MAIS FACIL (REALIGAR PONTEIRO APÓS RESOLVER EXPRESSÃO)
-                    Tipo* novo_realigamento_dois_frente = procurador_de_token->direita->direita; // salvei 2 nós a frente
-                    Tipo* novo_realigamento_atual       = procurador_de_token;                   // mudei o nome para facilitar leitura           
+                    Tipo* novo_realigamento_dois_frente = elemento_atual->direita->direita; // salvei 2 nós a frente          
 
                     // DESLIGAR PONTEIRO DOS LADOS
-                    Tipo* desligamento_ponteiro = novo_realigamento_atual;
-                    free(desligamento_ponteiro->direita);
+                    limpar_bloco(&elemento_atual->esquerda)
 
                     // Religa os ponteiros (Ida e Volta)
-                    novo_realigamento_atual->direita        = novo_realigamento_dois_frente;
-                    novo_realigamento_dois_frente->esquerda = novo_realigamento_atual;
+                    elemento_atual->direita                 = novo_realigamento_dois_frente;
+                    novo_realigamento_dois_frente->esquerda = elemento_atual;
                 }
 
                 // Se não tem ninguém depois, é o fim da lista
                 else
                 {
-                    free(procurador_de_token->direita);
-                    procurador_de_token->direita = NULL;
+                    limpar_bloco(&elemento_atual->esquerda)
                 }
-                
             }
-            //-----------------------------------------------------------------------
+        //-----------------------------------------------------------------------  
         }
-
-    procurador_de_token = procurador_de_token->direita;
+    elemento_atual = elemento_atual->direita;
     }
 }
