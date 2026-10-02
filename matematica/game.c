@@ -242,39 +242,9 @@ void converter_em_numero
                 }
                 
             }
-             //-----------------------------------------------------------------------
-
-            //                      PONTEIROS LIGAMENTOS E DESLIGAMENTOS
-            if ((procurador_de_token->esquerda->esquerda != NULL && procurador_de_token->direita->direita != NULL)) // caso 1
-            {
-
-
-                //            SINTAXE MAIS FACIL (REALIGAR PONTEIRO APÓS RESOLVER EXPRESSÃO)
-                Tipo* novo_realigamento_dois_tras    = procurador_de_token->esquerda->esquerda;
-                Tipo* novo_realigamento_dois_frente  = procurador_de_token->direita->direita;
-                Tipo* novo_realigamento_atual        = procurador_de_token;
-
-                // DESLIGAR PONTEIRO DOS LADOS
-                Tipo* desligamento_ponteiro = novo_realigamento_atual;
-                free(desligamento_ponteiro->esquerda);
-                free(desligamento_ponteiro->direita);
-
-                // RELIGAR OS 2 NÓS DE TRAS E DA FRENTE (esquerda e direita)
-                novo_realigamento_atual->esquerda = novo_realigamento_dois_tras;
-                novo_realigamento_atual->direita  = novo_realigamento_dois_frente;
-
-                novo_realigamento_dois_tras->direita    = novo_realigamento_atual; // o de tras liga com o da frente
-                novo_realigamento_dois_frente->esquerda = novo_realigamento_atual;
-            }
-            else if (procurador_de_token->esquerda != NULL && procurador_de_token->direita != NULL) // caso 2
-            {
-                Tipo* novo_realigamento_atual = procurador_de_token;
-                // DESLIGAR PONTEIRO DOS LADOS
-                Tipo* desligamento_ponteiro = novo_realigamento_atual;
-                free(desligamento_ponteiro->esquerda);
-                free(desligamento_ponteiro->direita);
-            }
+            //-----------------------------------------------------------------------
         }
-        procurador_de_token = procurador_de_token->direita;
+
+    procurador_de_token = procurador_de_token->direita;
     }
 }
