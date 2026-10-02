@@ -23,41 +23,57 @@ typedef struct usuario
  
 // Exemplo de uso:
 // char* meu_texto = input();
+#include <stdio.h>
+#include <stdlib.h>
+
 char* input(void)
 {
-    
-    // temporarios...
     size_t buffer_text_total = 20;
     size_t buffer_text_atual = 0;
-    char* prompt = malloc(buffer_text_total * sizeof(char));
+    char* prompt = malloc(buffer_text_total);
+
+    // 1. Trata falha no malloc inicial
+    if (prompt == NULL)
+    {
+        return NULL;
+    }
 
     int caractere_atual = 0;
-    while((caractere_atual = getchar()) != '\n' && caractere_atual != EOF)
+    while ((caractere_atual = getchar()) != '\n' && caractere_atual != EOF)
     {
-        
         if (buffer_text_atual >= buffer_text_total - 1)
         {
-            char* prompt_tmp;
             buffer_text_total += 20;
-            prompt_tmp = realloc(prompt, buffer_text_total);
+            char* prompt_tmp = realloc(prompt, buffer_text_total);
+            
+            // 2. Libera a memória anterior se o realloc falhar
             if (prompt_tmp == NULL)
             {
-                return prompt_tmp;
+                free(prompt);
+                return NULL;
             }
             prompt = prompt_tmp;
         }
-        prompt[buffer_text_atual] = caractere_atual;
-        buffer_text_atual++; // cada loop == 1+ caractere
+        prompt[buffer_text_atual] = (char)caractere_atual;
+        buffer_text_atual++;
     }
 
-    // atribuição final
-      char* prompt_tmp = realloc(prompt, buffer_text_atual + 1);
-      if (prompt_tmp == NULL)
-      {
-        return prompt_tmp;
-      }
-      prompt_tmp[buffer_text_atual] = '\0';
-    return prompt_tmp;
+    // 3. Trata leitura vazia em caso de EOF imediato
+    if (buffer_text_atual == 0 && caractere_atual == EOF)
+    {
+        free(prompt);
+        return NULL;
+    }
+
+    // 4. Ajusta tamanho final mantendo os dados caso o realloc falhe
+    char* prompt_tmp = realloc(prompt, buffer_text_atual + 1);
+    if (prompt_tmp != NULL)
+    {
+        prompt = prompt_tmp;
+    }
+
+    prompt[buffer_text_atual] = '\0';
+    return prompt;
 }
 
 // limpar uma estrutura inteira
@@ -117,10 +133,16 @@ int main(void)
     double valor_token = 0;
     while (percorrer_string != NULL)
     {
+        
         // strtod transforma em numero e diz onde foi a quebra de linha e ainda envia o local!!
 
         valor_token = strtod(percorrer_string, &proxima_parte);
-
+        while (isspace((unsigned char)*proxima_parte)) 
+        { 
+            proxima_parte++; // for espaço pula 1 caractere
+        } 
+            // Se o strtod conseguiu ler um número (o ponteiro andou)
+        
         //            boleanas para quebra de expressão
         bool eh_simbolo_mutiplicacao = (*proxima_parte == '*' || toupper(*proxima_parte) == 'X');
         bool eh_simbolo_barra = (*proxima_parte == '/');
@@ -128,10 +150,11 @@ int main(void)
         bool eh_simbolo_menos = (*proxima_parte == '-');
 
         bool eh_o_fim = (*proxima_parte == '\0');
-
+        
         // caso alguma seja verdade
         if (eh_simbolo_mutiplicacao || eh_simbolo_barra || eh_simbolo_mais || eh_simbolo_menos)
         {
+
             if (expressao == NULL)
             {
                 Tipo *tmp_expressao = malloc(sizeof(Tipo));
@@ -166,8 +189,9 @@ int main(void)
 
                 expressao = tmp_expressao; // anda
             }
-
-            Tipo *atribute_token = malloc(sizeof(Tipo));
+            // criei uma lista a frente para salvar operadores
+            
+            Tipo *atribute_token = malloc(sizeof(Tipo)); // apenas um nome temporario para dizer oq isso faz.
             atribute_token->token = malloc(sizeof(char));
             if (atribute_token == NULL || atribute_token->token == NULL) return 1;
 
@@ -178,6 +202,8 @@ int main(void)
 
             atribute_token->numero = NULL;
             *atribute_token->token = proxima_parte[0];
+
+
         }
         if (eh_o_fim) // caso Seja o caractere final
         {
@@ -207,6 +233,8 @@ int main(void)
             }
             break;
         }
+        // Avança 1 caractere para SAIR do operador e não congelar o loop
+        proxima_parte++;
         // andar
         percorrer_string = proxima_parte;
     }
