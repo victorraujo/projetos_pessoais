@@ -42,6 +42,20 @@ void limpar_bloco(Tipo** bloco)
     free(*bloco);
     *bloco = NULL;
 }
+void limpar_encadeadas(Tipo** bloco)
+{
+    while(*bloco != NULL)
+    {
+        if ((*bloco)->direita == NULL) // ve se tem alguem na frente
+        {
+            free(*bloco);
+            *bloco = NULL;
+            return;
+        }
+        *bloco = (*bloco)->direita; // andar
+        free((*bloco)->esquerda); // exclutir o de tras
+    }
+}
 
 main(void)
 {
@@ -159,11 +173,13 @@ main(void)
     }
 
     free(prompt_texto);
-    // achar mutiplicação e divisão (prioridade 2)
 
+
+    // ACHAR MULTIPLICAÇÃO OU DIVIÃO (prioridade 2)
     Tipo *elemento_atual = expressao_inicio;
-    if (elemento_atual == NULL)
-        return 1;
+    if (elemento_atual == NULL) return 1;
+
+
     while (elemento_atual != NULL)
     {
         bool eh_mutiplicacao = (elemento_atual->token == '*' || toupper(elemento_atual->token) == 'X');
@@ -180,7 +196,7 @@ main(void)
             Tipo* elemento_frente = elemento_atual->direita;
             Tipo* elemento_tras   = elemento_atual->esquerda;
             
-            if (elemento_frente == NULL || elemento_tras == NULL || elemento_atual == NULL) return 1;
+            if (elemento_frente == NULL || elemento_tras == NULL) return 1;
 
             elemento_atual->numero = malloc(sizeof(double));
             if (elemento_atual->numero == NULL) return 1;
@@ -214,7 +230,7 @@ main(void)
                 elemento_atual->token = NULL;
                 if (*numero_direita == 0)
                 {
-                    printf("expressão invalida.");
+                    printf("expressão invalida.\n");
                     return 1;
                 }
                 resultado = numero_esquerda / numero_direita;
@@ -273,8 +289,115 @@ main(void)
                     limpar_bloco(&elemento_atual->esquerda)
                 }
             }
-        //-----------------------------------------------------------------------  
+            //-----------------------------------------------------------------------  
         }
     elemento_atual = elemento_atual->direita;
     }
+
+    //ACHAR SOMA OU SUBTRAÇÃO (PRIORIDADE MAIS BAIXA) 
+    elemento_atual = expressao_inicio;
+    while(elemento_atual != NULL)
+    {
+        bool eh_simbolo_mais  = (*elemento_atual->token  == '+');
+        bool eh_simbolo_menos = (*elemento_atual->token == '-');
+        if (eh_simbolo_mais || eh_simbolo_menos)
+        {
+                        // pre status para calculo
+            double numero_esquerda = 0;
+            double numero_direita  = 0;
+            double resultado       = 0;
+
+            // ponteiros renomeados para facilitar leitura
+            Tipo* elemento_frente = elemento_atual->direita;
+            Tipo* elemento_tras   = elemento_atual->esquerda;
+
+            elemento_atual->numero = malloc(sizeof(double));
+            if (elemento_atual->numero == NULL) return 1;
+
+            if (elemento_tras != NULL)
+            {
+                if (elemento_tras->numero != NULL) // tratar caso o numero que verificar seja outra coisa alem de numero
+                {
+                   numero_esquerda = *(elemento_tras->numero); // caso seja numero
+                }
+            }
+            if (elemento_frente != NULL)
+            {
+                if (elemento_frente->numero != NULL)  // tratar caso o numero que verificar seja outra coisa alem de numero
+                {
+                    numero_direita  = *(elemento_frente->numero);
+                }   
+            }
+    
+            if (eh_simbolo_mais)
+            {
+                free(elemento_atual->token);
+                elemento_atual = NULL;
+                resultado = numero_esquerda + numero_direita;
+            }
+            if (eh_simbolo_menos)
+            {
+                free(elemento_atual->token);
+                elemento_atual->token = NULL;
+                resultado = numero_esquerda - numero_direita;
+            }
+
+            //atribui o resultado ->
+            *elemento_atual->numero = resultado;
+
+            //------------ORGANIZANDO OS PONTEIRO APÓS EXPRESSÃO RESOLVIDA-------------------------------
+            //   
+
+            // ==================== NÓS À ESQUERDA <- ====================
+            if (elemento_atual->esquerda != NULL)
+            {
+                // existe elementos a frente
+                if (elemento_atual->esquerda->esquerda != NULL)
+                {
+                    //      SINTAXE MAIS FACIL (REALIGAR PONTEIRO APÓS RESOLVER EXPRESSÃO)
+                    Tipo* novo_realigamento_dois_tras    = elemento_atual->esquerda->esquerda; // salvei 2 nós a frente
+
+                    // DESLIGAR PONTEIRO DO LADO ESQUERDO
+                    limpar_bloco(&elemento_atual->esquerda);
+
+                    // Religa os ponteiros (Ida e Volta)
+                    elemento_atual->esquerda             = novo_realigamento_dois_tras;
+                    novo_realigamento_dois_tras->direita = elemento_atual;  
+                }
+
+                // Se não tem ninguém depois, é o fim da lista
+                else
+                {
+                    limpar_bloco(&elemento_atual->esquerda)
+                }
+            }
+            // ==================== NÓS À DIREITA -> ====================
+           
+            if (elemento_atual->direita != NULL)
+            {
+                if (elemento_atual->direita->direita != NULL)
+                {
+                    //      SINTAXE MAIS FACIL (REALIGAR PONTEIRO APÓS RESOLVER EXPRESSÃO)
+                    Tipo* novo_realigamento_dois_frente = elemento_atual->direita->direita; // salvei 2 nós a frente          
+
+                    // DESLIGAR PONTEIRO DOS LADOS
+                    limpar_bloco(&elemento_atual->esquerda)
+
+                    // Religa os ponteiros (Ida e Volta)
+                    elemento_atual->direita                 = novo_realigamento_dois_frente;
+                    novo_realigamento_dois_frente->esquerda = elemento_atual;
+                }
+
+                // Se não tem ninguém depois, é o fim da lista
+                else
+                {
+                    limpar_bloco(&elemento_atual->esquerda)
+                }
+            }
+            //-----------------------------------------------------------------------  
+        }
+        elemento_atual = elemento_atual->direita;
+    }
+
+    limpar_encadeadas(&expressao_inicio);
 }
