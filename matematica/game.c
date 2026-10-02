@@ -148,95 +148,60 @@ int main(void)
         bool eh_simbolo_barra = (*proxima_parte == '/');
         bool eh_simbolo_mais = (*proxima_parte == '+');
         bool eh_simbolo_menos = (*proxima_parte == '-');
-
+        bool eh_algum_operador = (eh_simbolo_mutiplicacao || eh_simbolo_barra || eh_simbolo_mais || eh_simbolo_menos)
         bool eh_o_fim = (*proxima_parte == '\0');
-        
-        // caso alguma seja verdade
-        if (eh_simbolo_mutiplicacao || eh_simbolo_barra || eh_simbolo_mais || eh_simbolo_menos)
+
+        if (expressao == NULL)
         {
-
-            if (expressao == NULL)
-            {
-                Tipo *tmp_expressao = malloc(sizeof(Tipo));
-                tmp_expressao->numero = malloc(sizeof(double));
-                if (tmp_expressao == NULL || tmp_expressao->numero == NULL)
-                {
-                    return 1;
-                }
-
-                // NÓS
-                tmp_expressao->esquerda = NULL;
-                tmp_expressao->direita = NULL;
-
-                *tmp_expressao->numero = valor_token;
-                tmp_expressao->token = NULL;
-
-                expressao_inicio = tmp_expressao;
-                expressao = tmp_expressao;
-            }
-            else
-            {
-                Tipo *tmp_expressao = malloc(sizeof(Tipo));
-                tmp_expressao->numero = malloc(sizeof(double));
-
-                expressao->direita = tmp_expressao; // o antigo liga com o novo
-
-                tmp_expressao->esquerda = expressao; // o novo liga com o antigo
-                tmp_expressao->direita = NULL;
-
-                *tmp_expressao->numero = valor_token;
-                tmp_expressao->token = NULL;
-
-                expressao = tmp_expressao; // anda
-            }
-            // criei uma lista a frente para salvar operadores
-            
-            Tipo *atribute_token = malloc(sizeof(Tipo)); // apenas um nome temporario para dizer oq isso faz.
-            atribute_token->token = malloc(sizeof(char));
-            if (atribute_token == NULL || atribute_token->token == NULL) return 1;
-
-            expressao->direita = atribute_token;
-
-            atribute_token->esquerda = expressao;
-            atribute_token->direita = NULL;
-
-            atribute_token->numero = NULL;
-            *atribute_token->token = proxima_parte[0];
-
-
-        }
-        if (eh_o_fim) // caso Seja o caractere final
-        {
-            Tipo *tmp_expressao = malloc(sizeof(Tipo));
+            Tipo*tmp_expressao    = malloc(sizeof(Tipo));
             tmp_expressao->numero = malloc(sizeof(double));
-            if (tmp_expressao == NULL || tmp_expressao->numero == NULL)
-                return 1; // erro de locação
+            if (tmp_expressao == NULL ||tmp_expressao == NULL) return 1;
 
-            *tmp_expressao->numero = valor_token;
-            tmp_expressao->token = NULL;
+            tmp_expressao->esquerda  = NULL;
+            tmp_expressao->direita   = NULL;
+            tmp_expressao->token     = NULL;
+            *(tmp_expressao->numero) = valor_token;
 
-            valor_token = 0;
-            if (expressao == NULL)
-            {
-                tmp_expressao->esquerda = NULL;
-                tmp_expressao->direita = NULL;
+            expressao_inicio = tmp_expressao;
+            expressao = tmp_expressao;
+        }
+        else
+        {
+            Tipo*tmp_expressao    = malloc(sizeof(Tipo));
+            tmp_expressao->numero = malloc(sizeof(double));
+            if (tmp_expressao == NULL ||tmp_expressao == NULL) return 1;
 
-                expressao = tmp_expressao;
-                expressao_inicio = expressao;
-            }
-            else
-            {
-                expressao->direita = tmp_expressao;
-                tmp_expressao->esquerda = expressao;
-                tmp_expressao->direita = NULL;
-                expressao = tmp_expressao;
-            }
+            tmp_expressao->esquerda  = expressao;
+            tmp_expressao->direita   = NULL;
+            tmp_expressao->token     = NULL;
+            *(tmp_expressao->numero) = valor_token;
+
+            expressao->direita = tmp_expressao;
+            
+            expressao = tmp_expressao;
+        }
+
+        // caso alguma seja verdade
+        if (eh_algum_operador)
+        {
+            // organizar o sistema
+            Tipo* tmp_expressao  = malloc(sizeof(Tipo));
+            tmp_expressao->token = malloc(sizeof(char));
+            if (tmp_expressao == NULL || tmp_expressao->token == NULL) if return 1;
+
+            tmp_expressao->esquerda = expressao;
+            tmp_expressao->direita  = NULL;
+            *(tmp_expressao->token) = *proxima_parte;
+            tmp_expressao->numero   = NULL;
+
+            expressao->direita = tmp_expressao;
+
+            expressao = tmp_expressao;
+        }
+        if (eh_o_fim)
+        {
             break;
         }
-        // Avança 1 caractere para SAIR do operador e não congelar o loop
-        proxima_parte++;
-        // andar
-        percorrer_string = proxima_parte;
     }
 
     free(prompt_texto);
