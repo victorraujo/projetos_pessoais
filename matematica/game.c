@@ -141,15 +141,16 @@ int main(void)
         { 
             proxima_parte++; // for espaço pula 1 caractere
         } 
-            // Se o strtod conseguiu ler um número (o ponteiro andou)
+        percorrer_string = proxima_parte;
+        
         
         //            boleanas para quebra de expressão
-        bool eh_simbolo_mutiplicacao = (*proxima_parte == '*' || toupper(*proxima_parte) == 'X');
-        bool eh_simbolo_barra = (*proxima_parte == '/');
-        bool eh_simbolo_mais = (*proxima_parte == '+');
-        bool eh_simbolo_menos = (*proxima_parte == '-');
+        bool eh_simbolo_mutiplicacao = (*percorrer_string == '*' || toupper(*proxima_parte) == 'X');
+        bool eh_simbolo_barra = (*percorrer_string == '/');
+        bool eh_simbolo_mais = (*percorrer_string == '+');
+        bool eh_simbolo_menos = (*percorrer_string == '-');
         bool eh_algum_operador = (eh_simbolo_mutiplicacao || eh_simbolo_barra || eh_simbolo_mais || eh_simbolo_menos)
-        bool eh_o_fim = (*proxima_parte == '\0');
+        bool eh_o_fim = (*percorrer_string == '\0');
 
         if (expressao == NULL)
         {
@@ -191,7 +192,7 @@ int main(void)
 
             tmp_expressao->esquerda = expressao;
             tmp_expressao->direita  = NULL;
-            *(tmp_expressao->token) = *proxima_parte;
+            *(tmp_expressao->token) = *percorrer_string;
             tmp_expressao->numero   = NULL;
 
             expressao->direita = tmp_expressao;
@@ -202,6 +203,9 @@ int main(void)
         {
             break;
         }
+        
+        proxima_parte++; // sai do operador e vai pra o proximo numero buscar
+        
     }
 
     free(prompt_texto);
