@@ -111,7 +111,7 @@ void limpar_encadeadas(Tipo** bloco)
 }
 void display(Tipo* expressao)
 {
-    printf("%d\n\n", expressao);
+    printf("%.2f\n\n", *expressao->numero);
     return;
 }
 
@@ -149,7 +149,7 @@ int main(void)
         bool eh_simbolo_barra = (*percorrer_string == '/');
         bool eh_simbolo_mais = (*percorrer_string == '+');
         bool eh_simbolo_menos = (*percorrer_string == '-');
-        bool eh_algum_operador = (eh_simbolo_mutiplicacao || eh_simbolo_barra || eh_simbolo_mais || eh_simbolo_menos)
+        bool eh_algum_operador = (eh_simbolo_mutiplicacao || eh_simbolo_barra || eh_simbolo_mais || eh_simbolo_menos);
         bool eh_o_fim = (*percorrer_string == '\0');
 
         if (expressao == NULL)
@@ -170,7 +170,7 @@ int main(void)
         {
             Tipo*tmp_expressao    = malloc(sizeof(Tipo));
             tmp_expressao->numero = malloc(sizeof(double));
-            if (tmp_expressao == NULL ||tmp_expressao == NULL) return 1;
+            if (tmp_expressao == NULL ||tmp_expressao->numero == NULL) return 1;
 
             tmp_expressao->esquerda  = expressao;
             tmp_expressao->direita   = NULL;
@@ -188,7 +188,7 @@ int main(void)
             // organizar o sistema
             Tipo* tmp_expressao  = malloc(sizeof(Tipo));
             tmp_expressao->token = malloc(sizeof(char));
-            if (tmp_expressao == NULL || tmp_expressao->token == NULL) if return 1;
+            if (tmp_expressao == NULL || tmp_expressao->token == NULL) return 1;
 
             tmp_expressao->esquerda = expressao;
             tmp_expressao->direita  = NULL;
@@ -205,12 +205,12 @@ int main(void)
         }
         
         proxima_parte++; // sai do operador e vai pra o proximo numero buscar
-        
+        percorrer_string = proxima_parte;
     }
 
     free(prompt_texto);
 
-
+    //--------------------------------------------------------------------------
     // ACHAR MULTIPLICAÇÃO OU DIVIÃO (prioridade 2)
     Tipo *elemento_atual = expressao_inicio;
     if (elemento_atual == NULL) return 1;
@@ -326,8 +326,24 @@ int main(void)
                     limpar_bloco(&elemento_atual->direita);
                     }
                 }
-            }
             //-----------------------------------------------------------------------  
+            // Recalcula o início e reinicia a varredura
+
+            //a raiz recebe o elemento atual.
+            // while vai pra esquerda ate achar null
+            // raiz vai se atualizando
+            // quando for null while da falso e expressao inicio recebe isso
+            // elemento atual recebe a mesma coisa ou seja achamos o inicio
+            // após quebrar a expressão.
+            Tipo* raiz = elemento_atual;
+            while (raiz->esquerda != NULL) 
+            {
+                raiz = raiz->esquerda;
+            }
+            expressao_inicio = raiz;
+            elemento_atual = expressao_inicio;
+            continue;
+            }
         }
     elemento_atual = elemento_atual->direita;
     }
@@ -421,7 +437,7 @@ int main(void)
                     Tipo* novo_realigamento_dois_frente = elemento_atual->direita->direita; // salvei 2 nós a frente          
 
                     // DESLIGAR PONTEIRO DOS LADOS
-                    limpar_bloco(&elemento_atual->esquerda);
+                    limpar_bloco(&elemento_atual->direita);
 
                     // Religa os ponteiros (Ida e Volta)
                     elemento_atual->direita                 = novo_realigamento_dois_frente;
@@ -435,12 +451,27 @@ int main(void)
                 }
             }
             //-----------------------------------------------------------------------  
+            // Recalcula o início e reinicia a varredura
+
+            //a raiz recebe o elemento atual.
+            // while vai pra esquerda ate achar null
+            // raiz vai se atualizando
+            // quando for null while da falso e expressao inicio recebe isso
+            // elemento atual recebe a mesma coisa ou seja achamos o inicio
+            // após quebrar a expressão.
+            Tipo* raiz = elemento_atual;
+            while (raiz->esquerda != NULL) 
+            {
+                raiz = raiz->esquerda;
+            }
+            expressao_inicio = raiz;
+            elemento_atual = expressao_inicio;
+            continue;
         }
-        
         elemento_atual = elemento_atual->direita;
-        
     }
-    display(elemento_atual);
+     
+    display(expressao_inicio);
 
     limpar_encadeadas(&expressao_inicio);
     return 0;
