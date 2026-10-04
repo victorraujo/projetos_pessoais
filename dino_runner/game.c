@@ -212,12 +212,10 @@ uint8_t aleatorio_posicao_x()
 int main(void)
 {
     inicializar();
+    
     int tempo_vivo = 0;
     char promptScore[25];
-
-
-
-
+    
     bool gameOver = false;
 
     uint8_t spawn_mob = 1;
