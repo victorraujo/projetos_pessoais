@@ -17,8 +17,6 @@ int main(void)
 {
     
     int bloco[] = {5, 1, 6, 103, 10, 11};
-    int bloco2[6];
-     memcpy(bloco2, bloco, sizeof(bloco));
     size_t bloco_totais = sizeof(bloco) / sizeof(bloco[0]);
     bool percorreu_todos_blocos = false;
     // ordenar por bloco
