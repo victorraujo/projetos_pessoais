@@ -15,8 +15,9 @@ int main(void)
     while (!WindowShouldClose())
     {
         BeginDrawing();
-            ClearBackground(RAYWHITE);
+            ClearBackground(BLUE);
             DrawText("Janela criada com sucesso!", 190, 200, 20, LIGHTGRAY);
+            GamepadButton butao;
         EndDrawing();
     }
 
