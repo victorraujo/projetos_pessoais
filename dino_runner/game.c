@@ -7,6 +7,9 @@
 #include <string.h> // strcpy e memset
 #include <stdio.h>   // padrão
 
+
+#include "display/display.h" // funções
+
 #define MOBS_TOTAIS 2
 //-------------------------DINO---------------------
 #define ALTURA 10                                //| 
@@ -128,43 +131,7 @@ void inicializar()
     srand(time(NULL));
 }
 
-// APOIO 1
-void resetarCursor()
-{
-    COORD coord = {0, 0};
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
 
-// APOIO 2
-void esconderCursor(bool desativar)
-{
-    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_CURSOR_INFO info;
-    info.dwSize = 100;
-
-    if (desativar == true)
-    {
-        info.bVisible = FALSE;
-    }
-    else
-    {
-        info.bVisible = TRUE;
-    }
-    SetConsoleCursorInfo(consoleHandle, &info);
-}
-
-// EXIBIR TELA
-void display()
-{
-    for (int altura = 0; altura < ALTURA; altura++)
-    {
-        for (int largura = 0; largura < LARGURA; largura++)
-        {
-            printf("%s", tela[altura][largura]);
-        }
-        printf("\n");
-    }
-}
 void displayGmerOver(char* prompt_texto)
 {
 
