@@ -202,6 +202,7 @@ int main(void)
 
     while (!gameOver)
     {
+        // --------------------RELOGIO--------------------
         if (tempo_vivo >= )
         for (int apagar = 0, tamanho = strlen(buffer_tela); apagar < tamanho; apagar++)
         {
@@ -215,8 +216,7 @@ int main(void)
             tela[RELOGIO_INICIO_Y][RELOGIO_INICIO_X + quantidade][1] = ' ';
             tela[RELOGIO_INICIO_Y][RELOGIO_INICIO_X + quantidade][2] = '\0';
         }
-        
-
+        //--------------------------------------------------------------------------------
 
         // SPAWNAR METEORO
         if (desastres_contador_spawnar_start < 100)
