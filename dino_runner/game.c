@@ -181,7 +181,6 @@ int main(void)
     inicializar();
     
     int tempo_vivo = 0;
-    char promptScore[25];
     
     bool gameOver = false;
 

@@ -3,7 +3,7 @@
                                          
 
 // display do jogo
-void display();
+void display(void);
 
 // APOIO 1
 // reseta o cursor pra cima
