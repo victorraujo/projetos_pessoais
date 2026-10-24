@@ -37,7 +37,7 @@
 //------------------------------------------------------------
 
 #define RELOGIO_INICIO_Y 2
-#define RELOGIO_INICIO_X 4
+#define RELOGIO_INICIO_X 2
 
 
 
@@ -182,6 +182,9 @@ int main(void)
     
     int tempo_vivo = 0;
     
+    char buffer_tela[LARGURA - 2] = {0};
+    
+    
     bool gameOver = false;
 
     uint8_t spawn_mob = 1;
@@ -199,7 +202,22 @@ int main(void)
 
     while (!gameOver)
     {
+        if (tempo_vivo >= )
+        for (int apagar = 0, tamanho = strlen(buffer_tela); apagar < tamanho; apagar++)
+        {
+            strcpy(tela[RELOGIO_INICIO_Y][RELOGIO_INICIO_X + apagar], "  ");
+        }
         tempo_vivo++;
+        snprintf(buffer_tela, sizeof(buffer_tela), "%d", tempo_vivo);
+        for (int quantidade = 0, tamanho = strlen(buffer_tela); quantidade < tamanho; quantidade++)
+        {
+            tela[RELOGIO_INICIO_Y][RELOGIO_INICIO_X + quantidade][0] = buffer_tela[quantidade];
+            tela[RELOGIO_INICIO_Y][RELOGIO_INICIO_X + quantidade][1] = ' ';
+            tela[RELOGIO_INICIO_Y][RELOGIO_INICIO_X + quantidade][2] = '\0';
+        }
+        
+
+
         // SPAWNAR METEORO
         if (desastres_contador_spawnar_start < 100)
         {

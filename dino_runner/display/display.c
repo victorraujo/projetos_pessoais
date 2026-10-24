@@ -22,7 +22,7 @@ void display(void)
 }
 
 // mover cursor pra cima
-void display()
+void resetarCursor()
 {
     COORD coord = {0, 0}; // posição linha zero, coluna zero
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord); // mover
