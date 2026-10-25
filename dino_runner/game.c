@@ -11,8 +11,8 @@
   https://scratch.mit.edu/projects/1264628797/
    
   Anotações importantes:
-    - w:     para avançar.
-    - space: pular.
+    - w     / para avançar.
+    - space / pular.
     - 
 
 ==========================================
