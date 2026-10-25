@@ -1,7 +1,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include "macros/macro.h"
+#include "../macros/macro.h"
 #include <stdio.h>
 #include <windows.h>
 #include <stdbool.h>
@@ -23,14 +23,14 @@ void display(void)
 }
 
 // APOIO 1 (RESETA O CURSOR PRA CIMA)
-void resetarCursor();
+void resetarCursor()
 {
     COORD coord = {0, 0}; // posição linha zero, coluna zero
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord); // mover
 }
 
 // APOIO 2 (ESCONDE O CURSOR)
-void esconderCursor(bool desativar);
+void esconderCursor(bool desativar)
 {
         HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO info;

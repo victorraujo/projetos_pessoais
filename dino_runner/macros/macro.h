@@ -30,5 +30,7 @@
 #define RELOGIO_INICIO_Y 2
 #define RELOGIO_INICIO_X 2
 
+// game fps
+#define FPS 80
 
 #endif

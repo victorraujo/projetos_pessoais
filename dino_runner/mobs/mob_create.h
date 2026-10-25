@@ -2,6 +2,8 @@
 #define MOB_CREATE_H
 
 #include <stdio.h>
+#include "../macros/macro.h"
+#include "mob_estrutura.h" 
 
 void criando_mobs(inimigos *mob, desastres_naturais *desatre)
 {

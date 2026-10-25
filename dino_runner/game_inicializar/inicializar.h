@@ -3,9 +3,12 @@
 
 #include <stdio.h>
 #include <windows.h>
-#include "mobs/mob_estrutura.h"
+#include <string.h>  // strcpy e memset
+#include "../mobs/mob_estrutura.h"
 
 // organizar e ajeitar tela
+
+extern Dino dino; // vem de game.c
 void inicializar()
 {
     SetConsoleOutputCP(CP_UTF8);
@@ -57,3 +60,4 @@ void inicializar()
 
     srand(time(NULL));
 }
+#endif

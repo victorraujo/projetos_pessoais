@@ -1,3 +1,23 @@
+/*
+==========================================
+          ANOTAÇÕES DO PROJETO
+==========================================
+ 
+  Autor:   Victor Rafael Dantas de Araújo     
+ 
+  Descrição:
+  game criado em homenagem ao "dino runner" de navegador. 
+  e homenagem ao meu game no scrach "CS50: The Extinction Escape"
+  https://scratch.mit.edu/projects/1264628797/
+   
+  Anotações importantes:
+    - w:     para avançar.
+    - space: pular.
+    - 
+
+==========================================
+*/
+
 #include <stdint.h>  // uint8_t etc...
 #include <stdlib.h>  // srand
 #include <time.h>    // time
@@ -9,38 +29,20 @@
 
 // MACROS(TELA, POSIÇÕES)
 #include "macros/macro.h"
-// ESTRUTURAS
+// ESTRUTURAS E INICIALIZAÇÃO DOS MOBS
 #include "mobs/mob_estrutura.h"
+#include "mobs/mob_create.h"
 //DISPLAY GAME
 #include "display/display.h" 
 // START GAME
 #include "game_inicializar/inicializar.h"
-
+// VALORES ALEATÓRIO
+#include "sorting/sorting.h"
 
 // tela do jogo
 char tela[ALTURA][LARGURA][8];
 // mob principal
 Dino dino;
-
-
-
-// ou sim ou nao
-uint8_t sortearSimOuNao(void)
-{
-    return rand() % 2;
-}
-// posicao x aleatoria entre 11 e largura total
-uint8_t aleatorio_posicao_x()
-{
-    return 11 + (rand() % 23);
-}
-// desativado..
-//int aleatorio_mob();
-//{
-//    return rand() % MOBS_TOTAIS;
-//}
-
-
 
 int main(void)
 {
@@ -251,7 +253,7 @@ int main(void)
         resetarCursor();
         display();
         esconderCursor(true);
-        Sleep(80); // frames
+        Sleep(FPS); // frames
     }
     resetarCursor();
     display();
