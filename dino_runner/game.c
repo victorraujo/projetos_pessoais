@@ -14,9 +14,9 @@
     - w     / para avançar.
     - space / pular.
     - 
-
 ==========================================
 */
+
 
 #include <stdint.h>  // uint8_t etc...
 #include <stdlib.h>  // srand
