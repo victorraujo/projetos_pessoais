@@ -1,4 +1,4 @@
-// upgrade por vim...
+// versão -> 0.3
 
 
 
@@ -11,8 +11,15 @@
 // ALGORITMOS
 #include "includes/buscadores/buscador.h"
 #include "includes/ordenadores/ordenador.h"
-// ESTRUTURAS
-#include "estruturas/estrutura.h"
+// ESTRUTURAS E INTERFACE USUARIO (TERMINAL)
+#include "includes/estruturas/estrutura.h"
+#include "includes/interface/interface.h"
+// STATUS DO ALGORITMO EM TEMPO (ESPAÇO PARA SIMULAÇÃO)
+#include "includes/metricas/metrica.h"
+
+
+// ARRAY INICIAL TESTE
+#define TESTE_ARRAY 50
 
 int main(void)
 {
@@ -20,12 +27,13 @@ int main(void)
 
     
 
-    array_t *arraya;
+    array_t *array;
+    iniciar_array(array, TESTE_ARRAY);
 
-    iniciar_array(array, 50);
-    for (int i = 0; i < t; i++) 
+    const int size_array = array->tamanho;
+    for (int i = 0; i < size_array; i++) 
     {
-        arraya[i] = rand() % t;
+        array->dados[i] = rand() % size_array;
     }
     
     // temporizadores
@@ -33,7 +41,7 @@ int main(void)
     clock_t processador_inicio = clock();
 
     // teste aqui
-    mergeSorting(arraya, t);
+    mergeSorting(array->dados, size_array);
     //---------------------
 
     // fim dos temporizadores
@@ -46,9 +54,9 @@ int main(void)
     printf("tempo segundos:%lld\n", (long long) tempo_segundos);
     printf("clock: %.10f\n", resultado_processador);
 
-    for (int i = 0; i < t; i++)
+    for (int i = 0; i < size_array; i++)
     {
-        printf("bloco %d: [%d]\n", i, arraya[i]);
+        printf("bloco %d: [%d]\n", i, array[i]);
     }
 
     puts("");
@@ -86,11 +94,11 @@ int main(void)
 
         if (entrada == 1)
         {
-            indice_encontrado = busca_unitaria(numeroBuscar, arraya, t);
+            indice_encontrado = busca_unitaria(numeroBuscar, array->dados, size_array);
         }
         else if(entrada == 2)
         {
-            indice_encontrado = busca_binaria(numeroBuscar, arraya, 0, t - 1);
+            indice_encontrado = busca_binaria(numeroBuscar, array->dados, 0, size_array - 1);
         }
 
         // PEGAR O TEMPO AGORA
@@ -110,7 +118,7 @@ int main(void)
         }
 
         printf("\nindice encontrado: %d\n", indice_encontrado);
-        printf("bloco %d -> [%d]\n", indice_encontrado, arraya[indice_encontrado]);
+        printf("bloco %d -> [%d]\n", indice_encontrado, array->dados[indice_encontrado]);
 
 
     }
