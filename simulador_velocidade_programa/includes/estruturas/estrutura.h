@@ -86,12 +86,14 @@ void exibir_resultado_tempo(tempo_relogio_t t)
     return;
 }
 
-//-----------ARRAY (ESTRUTURA) FUNÇÕES//-----------
-// update 0.1 
-//-----------
-// sintaxe: iniciar_array(ptr, tamanho);
-// * estrutura na heap
-// *array na heap
+/*-----------ARRAY (ESTRUTURA) FUNÇÕES//-----------
+update 0.1 
+-----------
+sintaxe: iniciar_array(ptr, tamanho);
+-----------
+ * estrutura na heap
+ *array na heap
+ */
 void iniciar_array(array_t *ptr, int tamanho)
 {
     // CRIAÇÃO DA ESTRUTURA E ORGANIZAÇÃO
