@@ -13,7 +13,7 @@ typedef struct
     unsigned long long comparacoes; // <- quantas vezes fez (a > b)
     unsigned long long trocas;      // <- quantas vezes trocou elementos (Swap)
     unsigned long long copias;      // <- Quantas atribuições/cópias de memória fez
-}
+} metricas_t;
 
 
 // FUNÇÕES PARA GERENCIAR O CRONOMETRO E OS DADOS
