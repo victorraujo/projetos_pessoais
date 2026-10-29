@@ -87,12 +87,23 @@ void exibir_resultado_tempo(tempo_relogio_t t)
 }
 
 /*-----------ARRAY (ESTRUTURA) FUNÇÕES//-----------
-update 0.1 
------------
-sintaxe: iniciar_array(ptr, tamanho);
------------
- * estrutura na heap
- *array na heap
+
+---------VERSÃO------------
+
+-> update 0.1 
+
+---------O QUE FAZ----------
+-> Já organiza a estrutura do array com todos os elemento sendo 0 e
+   com tamanho tudo prontinho para utilizar a estrutura ("array_t").
+
+---------SINTAXE------------
+
+-> sintaxe: iniciar_array(ptr, tamanho);
+
+---------NOVIDADES------------
+ -> estrutura na heap
+ -> array na heap
+ -----------------------------
  */
 void iniciar_array(array_t *ptr, int tamanho)
 {
