@@ -8,19 +8,21 @@
 #include <time.h>
 #include <windows.h>
 
-
+// ALGORITMOS
 #include "includes/buscadores/buscador.h"
 #include "includes/ordenadores/ordenador.h"
-
+// ESTRUTURAS
 #include "estruturas/estrutura.h"
 
 int main(void)
 {
     srand(time(NULL));
 
-    const size_t t = 30000;
+    
 
-    int arraya[t];
+    array_t *arraya;
+
+    iniciar_array(array, 50);
     for (int i = 0; i < t; i++) 
     {
         arraya[i] = rand() % t;
