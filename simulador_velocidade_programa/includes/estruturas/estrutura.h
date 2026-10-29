@@ -1,6 +1,8 @@
 #ifndef ESTRUTURA_H
 #define ESTRUTURA_H
 
+
+// proxima upd -> mover as estruturas e funçoes para -> metricas
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
