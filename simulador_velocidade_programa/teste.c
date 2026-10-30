@@ -28,7 +28,8 @@ int main(void)
     
 
     array_t *array;
-    iniciar_array(&array, TESTE_ARRAY);
+    // criação do array
+    array_start(&array, TESTE_ARRAY);
 
     const int size_array = array->tamanho;
     for (int i = 0; i < size_array; i++) 
@@ -37,6 +38,9 @@ int main(void)
     }
     
     // temporizadores
+
+    metricas_t statusAlgoritmo;
+    // velhos
     time_t inicio = time(NULL);
     clock_t processador_inicio = clock();
 

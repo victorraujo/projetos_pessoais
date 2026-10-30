@@ -48,14 +48,14 @@ typedef struct
 
 ---------SINTAXE------------
 
--> sintaxe: iniciar_array(&ptr, tamanho);
+-> sintaxe: array_start(&ptr, tamanho);
 
 ---------NOVIDADES------------
  -> estrutura na heap
  -> array na heap
  -----------------------------
  */
-void iniciar_array(array_t **ptr, int tamanho)
+void array_start(array_t **ptr, int tamanho)
 {
     // CRIAÇÃO DA ESTRUTURA E ORGANIZAÇÃO
     *ptr = NULL;
