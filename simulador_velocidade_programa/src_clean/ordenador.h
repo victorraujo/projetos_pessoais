@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stdbool.h>
 
 
 //-------------------PUBBLE SORTING(simples e lento)-------------------
@@ -112,7 +112,7 @@ void merge_sorting(int auxiliar[], int array[], int inicio, int fim)
 void mergeSorting(int array[], int tamanho)
 {
 
-    int *auxiliar = malloc(tamanho * sizeof(int));
+    int *auxiliar = (int *)malloc(tamanho * sizeof(int)); // cast
     if (auxiliar == NULL) { return; }
     merge_sorting(auxiliar, array, 0,  tamanho - 1);
 }
