@@ -1,6 +1,6 @@
 
 # Sobre os includes
-``` text
+```text
 includes/
 ├── buscadores/
 │   └── buscador.h       <-- Algoritmos de busca (Busca Binária, Sequencial)
