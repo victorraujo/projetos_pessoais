@@ -1,5 +1,6 @@
 
 # Sobre os includes
+``` text
 includes/
 ├── buscadores/
 │   └── buscador.h       <-- Algoritmos de busca (Busca Binária, Sequencial)
@@ -11,3 +12,4 @@ includes/
 │   └── metrica.h        <-- Structs de tempo/clock e funções de medição
 └── interface/
     └── interface.h      <-- Menus do terminal, prints de tela e entradas
+```
