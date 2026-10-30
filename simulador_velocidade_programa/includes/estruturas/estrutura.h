@@ -36,58 +36,6 @@ typedef struct
 
 
 // 3. PROTÓTIPOS DAS FUNÇÕES QUE USAM ESSAS STRUCTS
-
-
-//-----------CLOCK FUNÇÕES//-----------
-
-// iniciar = iniciar a contagem
-// sintaxe: iniciar_clock(&variavel);
-void iniciar_clock(tempo_clock_t *c)
-{
-    c->inicio = clock();
-    return;
-}
-// parar = parar a contagem e atribuir
-// sintaxe: parar_clock(&variavel);
-void parar_clock(tempo_clock_t *c)
-{
-    c->fim;
-    c->tempo_total = (c->fim - c->inicio) / CLOCKS_PER_SEC;
-    return;
-}
-// exibir na tela usando printf
-// sintaxe: exibir_resultado_clock(variavel);
-void exibir_resultado_clock(tempo_clock_t c)
-{
-    printf("%.10d", c.tempo_total);
-    return;
-}
-
-//-----------TIME TEMPO(RELOGIO) FUNÇÕES//-----------
-
-// iniciar = iniciar a contagem
-// sintaxe: iniciar_tempo(&variavel);
-void iniciar_tempo(tempo_relogio_t *t)
-{
-    t->inicio = time(NULL);
-}
-// parar = parar a contagem
-// sintaxe: parar_tempo(&variavel)
-void parar_tempo(tempo_relogio_t *t)
-{
-    t->fim;
-    t->tempo_total = t->fim - t->inicio;
-    return;
-}
-
-// exibir na tela usando printf
-// sintaxe: exibir_temo(variavel);
-void exibir_resultado_tempo(tempo_relogio_t t)
-{
-    printf("%lld", (long long) t.tempo_total);
-    return;
-}
-
 /*-----------ARRAY (ESTRUTURA) FUNÇÕES//-----------
 
 ---------VERSÃO------------
@@ -123,7 +71,7 @@ void iniciar_array(array_t **ptr, int tamanho)
     { 
         free((*ptr));
         (*ptr) = NULL; 
-        return;
+         return;
     }
 
     // ATRIBUINDO VALORES
