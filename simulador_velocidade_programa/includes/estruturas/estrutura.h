@@ -92,7 +92,7 @@ void exibir_resultado_tempo(tempo_relogio_t t)
 
 ---------VERSÃO------------
 
--> update 0.1 
+-> update 0.2 - > bug de não trocar o ponteiro em main resolvido.
 
 ---------O QUE FAZ----------
 -> Já organiza a estrutura do array com todos os elemento sendo 0 e
@@ -100,28 +100,36 @@ void exibir_resultado_tempo(tempo_relogio_t t)
 
 ---------SINTAXE------------
 
--> sintaxe: iniciar_array(ptr, tamanho);
+-> sintaxe: iniciar_array(&ptr, tamanho);
 
 ---------NOVIDADES------------
  -> estrutura na heap
  -> array na heap
  -----------------------------
  */
-void iniciar_array(array_t *ptr, int tamanho)
+void iniciar_array(array_t **ptr, int tamanho)
 {
     // CRIAÇÃO DA ESTRUTURA E ORGANIZAÇÃO
-    ptr = NULL;
-    ptr = malloc(sizeof(array_t));
-    ptr->dados = malloc(tamanho * sizeof(ptr->dados));
+    *ptr = NULL;
+    *ptr = malloc(sizeof(array_t));
 
-    // SEGURANÇA
-    if (ptr == NULL) { return; }
-    if (ptr->dados == NULL) { ptr = NULL; return;}
+    // SEGURANÇA 2 (ponteiro)
+    if ((*ptr) == NULL) { return; }
+
+    (*ptr)->dados = malloc(tamanho * sizeof((*ptr)->dados));
+
+    // SEGURANÇA 2 (dados)
+    if ((*ptr)->dados == NULL) 
+    { 
+        free((*ptr));
+        (*ptr) = NULL; 
+        return;
+    }
 
     // ATRIBUINDO VALORES
-    ptr->tamanho = tamanho;
+    (*ptr)->tamanho = tamanho;
     // LIMPEZA ARRAY (TUDO PARA 0)
-    memset(ptr->dados, 0, tamanho * sizeof(int));
+    memset((*ptr)->dados, 0, tamanho * sizeof(int));
     return;
 }
 #endif;
