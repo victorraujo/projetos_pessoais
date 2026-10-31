@@ -2,8 +2,19 @@
 #define INTERFACE_H
 
 #include <stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 
+// LIMPEZA DE TELA (WINDOWS E LINUX)
+void interface_limpar_tela(void)
+{
+#ifdef _WIN32
+    system("cls");  // No Windows
+#else
+    system("clear"); // No Linux / macOS
+#endif
+}
 void interface_exibir_tutorial(void)
 {
     printf("\n=========================================================\n");
