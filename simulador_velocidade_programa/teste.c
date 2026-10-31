@@ -16,6 +16,8 @@
 #include "includes/interface/interface.h"
 // STATUS DO ALGORITMO EM TEMPO (ESPAÇO PARA SIMULAÇÃO)
 #include "includes/metricas/metrica.h"
+// NUMEROS ALEATÓRIOS
+#include "gerador/gerador.h"
 
 
 // ARRAY INICIAL TESTE
@@ -26,45 +28,24 @@ int main(void)
     srand(time(NULL));
 
     
-
-    array_t *array;
     // criação do array
-    array_start(&array, TESTE_ARRAY);
-
-    const int size_array = array->tamanho;
-    for (int i = 0; i < size_array; i++) 
-    {
-        array->dados[i] = rand() % size_array;
-    }
+    array_t *array;
     
+    array_start(&array, TESTE_ARRAY);
+    // aleatorio numero
+    const int size_array = array->tamanho;
+    gerador_array(array, array->tamanho, 0, size_array);
     // temporizadores
-
     metricas_t statusAlgoritmo;
-    // velhos
-    time_t inicio = time(NULL);
-    clock_t processador_inicio = clock();
 
     // teste aqui
+    metrica_start(&statusAlgoritmo);
     mergeSorting(array->dados, size_array);
+    metrica_fim(&statusAlgoritmo);
     //---------------------
 
-    // fim dos temporizadores
-    time_t fim = time(NULL);
-    time_t tempo_segundos = fim - inicio;
-
-    clock_t processador_fim = clock();
-    double resultado_processador = (double) (processador_fim - processador_inicio) / CLOCKS_PER_SEC;
-
-    printf("tempo segundos:%lld\n", (long long) tempo_segundos);
-    printf("clock: %.10f\n", resultado_processador);
-
-    for (int i = 0; i < size_array; i++)
-    {
-        printf("bloco %d: [%d]\n", i, array[i]);
-    }
-
-    puts("");
-    puts("");
+    //printf("tempo segundos:%lld\n", (long long) tempo_segundos);
+    //printf("clock: %.10f\n", resultado_processador);
 
     while(true)
     {

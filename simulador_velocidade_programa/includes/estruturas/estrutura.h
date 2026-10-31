@@ -7,22 +7,6 @@
 #include <time.h>
 #include <stdlib.h>
 
-typedef struct 
-{
-    time_t inicio;
-    time_t fim;
-    double tempo_total;
-} tempo_relogio_t;
-
-
-// Para medir tempo de processamento/CPU (em milissegundos)
-typedef struct
-{
-    clock_t inicio;
-    clock_t fim;
-    double tempo_total;
-} tempo_clock_t; 
-
 typedef struct
 {
     int *dados;
