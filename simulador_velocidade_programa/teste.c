@@ -54,32 +54,7 @@ int main(void)
 
     while(true)
     {
-
         
-        if(entrada == 0) { break; }
-
-        if (entrada == 1)
-        {
-            indice_encontrado = busca_unitaria(numeroBuscar, array->dados, size_array);
-        }
-        else if(entrada == 2)
-        {
-            indice_encontrado = busca_binaria(numeroBuscar, array->dados, 0, size_array - 1);
-        }
-
-        printf("\ntempo em vida real: %lld\n", (long long) tempo_procurador_segundos_total);
-        printf("\nclock time procurador: %.10f\n", tempo_clock);
-        printf("\n\n\n");
-
-        if (indice_encontrado == -1)
-        {
-            printf("não foi possivel encontrar. tente novamente\n");
-        }
-
-        printf("\nindice encontrado: %d\n", indice_encontrado);
-        printf("bloco %d -> [%d]\n", indice_encontrado, array->dados[indice_encontrado]);
-
-
     }
     return 0;
 }

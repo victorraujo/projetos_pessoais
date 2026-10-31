@@ -6,6 +6,12 @@
 #include <stdlib.h>
 
 
+typedef struct
+{
+    
+}usuario_t;
+
+
 // LIMPEZA DE TELA (WINDOWS E LINUX)
 void interface_limpar_tela(void)
 {
