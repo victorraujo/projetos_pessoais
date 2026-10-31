@@ -18,7 +18,7 @@ typedef struct
 } array_t;
 
 
-typedef struct usuario_s
+typedef struct
 {
     int ordenadores;
     int buscadores;
@@ -53,7 +53,7 @@ void array_start(array_t **ptr, int tamanho)
     // SEGURANÇA 2 (ponteiro)
     if ((*ptr) == NULL) { return; }
 
-    (*ptr)->dados = malloc(tamanho * sizeof((*ptr)->dados));
+    (*ptr)->dados = malloc(tamanho * sizeof(int));
 
     // SEGURANÇA 2 (dados)
     if ((*ptr)->dados == NULL) 
@@ -75,4 +75,4 @@ void usuario_start(usuario_t *u)
     memset(u, 0, sizeof(usuario_t));
     return;
 }
-#endif;
+#endif

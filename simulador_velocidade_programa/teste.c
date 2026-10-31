@@ -18,11 +18,12 @@
 // STATUS DO ALGORITMO EM TEMPO (ESPAÇO PARA SIMULAÇÃO)
 #include "includes/metricas/metrica.h"
 // NUMEROS ALEATÓRIOS
-#include "gerador/gerador.h"
+#include "includes/gerador/gerador.h"
 
 
 // ARRAY INICIAL TESTE
 #define TESTE_ARRAY 50
+#define SAIR 0
 
 int main(void)
 {
@@ -34,11 +35,10 @@ int main(void)
     array_t *array;
     array_start(&array, TESTE_ARRAY);
     const int size_array = array->tamanho;
-    gerador_array(array, array->tamanho, 0, size_array);
+    gerador_array(array->dados, array->tamanho, 0, size_array);
 
     // TRATAMENTO USUARIO
-    usuario_t usuario;
-    usuario_git(&usuario);
+
 
     // temporizadores
     metricas_t statusAlgoritmo;
@@ -52,9 +52,23 @@ int main(void)
     interface_limpar_tela();     // clear
     while(true)
     {
-        usuario.ordenadores = interface_menu_ordenadores();
-        if(usuario.ordenadores <= 0) { break; }
+        int ordenador = interface_menu_ordenadores();
+        if(ordenador <= SAIR) { break; }
+        meus_ordenadores[ordenador -1 ](array->dados, array->tamanho);
 
+        while (true)
+        {
+            int buscador = interface_menu_buscadores();
+            if (buscador <= SAIR) { break; }
+            if (buscador == 3 ) 
+            { 
+                interface_organizacao_array(array->dados, array->tamanho); 
+                continue; 
+            }
+            //if (buscador == 4) { interface_exibir_metricas(); }
+            int chave = interface_pedir_chave_buscar();
+            int local = meus_buscador[buscador - 1](chave, array->dados, array->tamanho);
+        }
 
     }
     return 0;

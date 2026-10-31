@@ -6,10 +6,16 @@
 #include <stdlib.h>
 
 
-typedef struct
+/*
+grupo de opções relacionadas que criam um novo tipo de dado.
+*/
+typedef enum estado_app_s
 {
-    
-}usuario_t;
+    ESTADO_SAIR = 0,
+    ESTADO_MENU_PRINCIPAL,
+    ESTADO_MENU_ORDENACAO,
+    ESTADO_MENU_BUSCA
+} estado_app_t;
 
 
 // LIMPEZA DE TELA (WINDOWS E LINUX)
@@ -60,7 +66,7 @@ int interface_menu_ordenadores(void)
     printf("=========================================\n");
     printf("1. Bubble Sort\n");
     printf("2. Merge Sort\n");
-    printf("0. Sair\n");
+    printf("0. sair\n");
     printf("-----------------------------------------\n");
     printf("Escolha uma opcao: ");
     scanf("%d", &opcao);
@@ -74,25 +80,38 @@ int interface_menu_buscadores(void)
     printf("\n--- ALGORITMOS DE BUSCA ---\n");
     printf("1. Busca Linear (Funciona em vetor desordenado)\n");
     printf("2. Busca Binaria (Requer vetor ordenado)\n");
+    printf("3. ver list\n");
+    printf("4. metricas\n");
     printf("0. Voltar\n");
+    
     printf("---------------------------\n");
     printf("Escolha o tipo de busca: ");
     scanf("%d", &opcao);
     return opcao;
 }
 
-// Pergunta o valor a ser buscado
-int interface_pedir_chave_busca(void)
+
+void interface_organizacao_array(int array[], const int tamanho)
 {
-    int opcao;
+    for(int i = 0; i < tamanho; i++)
+    {
+        printf("bloco %d = [%d]\n", i, array[i]);
+    }
+    return;
+}
+
+// Pergunta o valor a ser buscado
+int interface_pedir_chave_buscar(void)
+{
+    int chave;
     int entrada;
     do
     {
-        entrada = printf("\nDigite o numero que deseja buscar no vetor: ");
-    scanf("%d", &opcao);
+        printf("\nDigite o numero que deseja buscar no vetor: ");
+        entrada = scanf("%d", &chave);
     } while (entrada != 1);
 
-    return;
+    return chave;
     
 }
 // Exibe os detalhes e resultados guardados na struct de métricas

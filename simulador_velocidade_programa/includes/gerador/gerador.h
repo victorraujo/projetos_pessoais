@@ -5,7 +5,7 @@
 #include <time.h>   // time(NULL)
 #include <stdlib.h> // srand -> semente || rand() -> numero aleatorio
 
-gerador_init(void)
+void gerador_init(void)
 {
     srand(time(NULL));
     return;

@@ -55,7 +55,7 @@ void metrica_start(metricas_t *status)
 void metrica_fim(metricas_t *status)
 {
     status->cpu_fim     = clock();
-    status->relogio_fim = NULL;
+    status->relogio_fim = time(NULL);
 
     // CALCULO PARA RESULTADO
     status->cpu_tempo_ms = (double) (status->cpu_fim - status->cpu_inicio) / CLOCKS_PER_SEC;

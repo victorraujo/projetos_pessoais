@@ -122,7 +122,7 @@ void mergeSorting(int array[], int tamanho)
 //--------------------//EMPACOTAMENTO DAS FUNÇÕES//--------------------
 // wrapper_bubble = empacotamento apenas para organizar para os ponteiros.
 
-wrapper_bubble(int array[], int tamanho)
+void wrapper_bubble(int array[], int tamanho)
 {
     bubbleSort(array, tamanho);
 }
