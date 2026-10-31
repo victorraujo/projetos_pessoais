@@ -60,6 +60,7 @@ typedef int (*FuncaoBuscador)(int numero_buscar, int array[], int tamanho);
 
 //  wrapper_busca_linear  = 1
 //  wrapper_busca_binaria = 2
+#define ALINHAR_INDICE -1
 FuncaoBuscador meus_buscador[] = {
      wrapper_busca_linear,
      wrapper_busca_binaria

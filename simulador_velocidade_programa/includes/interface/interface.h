@@ -6,17 +6,6 @@
 #include <stdlib.h>
 
 
-/*
-grupo de opções relacionadas que criam um novo tipo de dado.
-*/
-typedef enum estado_app_s
-{
-    ESTADO_SAIR = 0,
-    ESTADO_MENU_PRINCIPAL,
-    ESTADO_MENU_ORDENACAO,
-    ESTADO_MENU_BUSCA
-} estado_app_t;
-
 
 // LIMPEZA DE TELA (WINDOWS E LINUX)
 void interface_limpar_tela(void)

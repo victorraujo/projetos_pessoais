@@ -7,6 +7,16 @@
 #include <time.h>
 #include <stdlib.h>
 
+/*
+grupo de opções relacionadas que criam um novo tipo de dado.
+*/
+typedef enum
+{
+    ESTADO_SAIR = 0,        // <- sair de algo
+    ESTADO_MENU_PRINCIPAL,  // <- estado menu principal (inicial)
+    ESTADO_MENU_SEGUNDARIO, // <- estado do menu segundario (segundo menu)
+} estado_app_t; // <- nome oficial
+
 typedef struct
 {
     int *dados;
@@ -20,9 +30,13 @@ typedef struct
 
 typedef struct
 {
-    int ordenadores;
-    int buscadores;
-}usuario_t;
+    estado_app_t estado_atual; // Controla o loop dos menus
+    int tipo_ordenador;        // Algoritmo escolhido
+    int tipo_buscador;         // Busca escolhida
+    int chave_busca;           // Valor a procurar
+    int resultado_posicao;     // Índice encontrado  
+    
+}navegacao_t;
 
 // 3. PROTÓTIPOS DAS FUNÇÕES QUE USAM ESSAS STRUCTS
 /*-----------ARRAY (ESTRUTURA) FUNÇÕES//-----------
@@ -70,9 +84,9 @@ void array_start(array_t **ptr, int tamanho)
     return;
 }
 
-void usuario_start(usuario_t *u)
+void navegacao_start(navegacao_t *n)
 {
-    memset(u, 0, sizeof(usuario_t));
+    memset(n, 0, sizeof(navegacao_t));
     return;
 }
 #endif

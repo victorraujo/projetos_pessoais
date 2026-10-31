@@ -30,6 +30,7 @@ int main(void)
     // start numeros aleatorio (semente)
     gerador_init();
 
+
     
     // criação do array
     array_t *array;
@@ -47,16 +48,22 @@ int main(void)
     //printf("tempo segundos:%lld\n", (long long) tempo_segundos);
     //printf("clock: %.10f\n", resultado_processador);
 
-
+    // tutorial
     interface_exibir_tutorial(); // tutorial
     interface_limpar_tela();     // clear
-    while(true)
-    {
-        int ordenador = interface_menu_ordenadores();
-        if(ordenador <= SAIR) { break; }
-        meus_ordenadores[ordenador -1 ](array->dados, array->tamanho);
 
-        while (true)
+    // iniciamento de navegacao
+    navegacao_t navegacao;
+    sessao_start(&navegacao);
+    navegacao.estado_atual = ESTADO_MENU_PRINCIPAL;
+
+    while(navegacao.estado_atual == ESTADO_MENU_PRINCIPAL)
+    {
+        navegacao.tipo_ordenador = interface_menu_ordenadores();
+
+        meus_ordenadores[navegacao.tipo_ordenador -1](array->dados, array->tamanho);
+
+        while (navegacao.estado_atual == ESTADO_MENU_SEGUNDARIO)
         {
             int buscador = interface_menu_buscadores();
             if (buscador <= SAIR) { break; }
@@ -65,7 +72,7 @@ int main(void)
                 interface_organizacao_array(array->dados, array->tamanho); 
                 continue; 
             }
-            //if (buscador == 4) { interface_exibir_metricas(); }
+
             int chave = interface_pedir_chave_buscar();
             int local = meus_buscador[buscador - 1](chave, array->dados, array->tamanho);
         }
