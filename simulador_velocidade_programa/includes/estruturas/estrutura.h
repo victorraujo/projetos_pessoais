@@ -18,6 +18,11 @@ typedef struct
 } array_t;
 
 
+typedef struct usuario_s
+{
+    int ordenadores;
+    int buscadores;
+}usuario_t;
 
 // 3. PROTÓTIPOS DAS FUNÇÕES QUE USAM ESSAS STRUCTS
 /*-----------ARRAY (ESTRUTURA) FUNÇÕES//-----------
@@ -62,6 +67,12 @@ void array_start(array_t **ptr, int tamanho)
     (*ptr)->tamanho = tamanho;
     // LIMPEZA ARRAY (TUDO PARA 0)
     memset((*ptr)->dados, 0, tamanho * sizeof(int));
+    return;
+}
+
+void usuario_start(usuario_t *u)
+{
+    memset(u, 0, sizeof(usuario_t));
     return;
 }
 #endif;

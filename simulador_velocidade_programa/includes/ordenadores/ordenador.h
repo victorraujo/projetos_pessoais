@@ -143,7 +143,7 @@ typedef void (*FuncaoOrdenacao)(int array[], int tamanho);
 
 //  wrapper_bubble = 1
 //  wrapper_merge  = 2
-FuncaoOrdenacao meus_algoritmos[] = {
+FuncaoOrdenacao meus_ordenadores[] = {
     wrapper_bubble,
     wrapper_merge
 };
