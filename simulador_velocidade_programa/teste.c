@@ -25,7 +25,8 @@
 
 int main(void)
 {
-    srand(time(NULL));
+    // start numeros aleatorio (semente)
+    gerador_init();
 
     
     // criação do array
@@ -34,6 +35,7 @@ int main(void)
     array_start(&array, TESTE_ARRAY);
     // aleatorio numero
     const int size_array = array->tamanho;
+    
     gerador_array(array, array->tamanho, 0, size_array);
     // temporizadores
     metricas_t statusAlgoritmo;
@@ -46,6 +48,7 @@ int main(void)
 
     //printf("tempo segundos:%lld\n", (long long) tempo_segundos);
     //printf("clock: %.10f\n", resultado_processador);
+    interface_exibir_tutorial();
 
     while(true)
     {

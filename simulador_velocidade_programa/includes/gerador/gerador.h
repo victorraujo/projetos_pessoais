@@ -5,7 +5,11 @@
 #include <time.h>   // time(NULL)
 #include <stdlib.h> // srand -> semente || rand() -> numero aleatorio
 
-
+gerador_init(void)
+{
+    srand(time(NULL));
+    return;
+}
 
 // NUMEROS ALEATÓRIO
 void gerador_array(int array[], int tamanho, int min, int max)
