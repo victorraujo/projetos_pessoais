@@ -1,8 +1,6 @@
 // versão -> 0.5
 
 
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -56,9 +54,11 @@ int main(void)
     navegacao_t navegacao;
     sessao_start(&navegacao);
     navegacao.estado_atual = ESTADO_MENU_PRINCIPAL;
-
+    // APP
     while(navegacao.estado_atual == ESTADO_MENU_PRINCIPAL)
     {
+
+        while(navegacao.estado_atual)
         navegacao.tipo_ordenador = interface_menu_ordenadores();
 
         meus_ordenadores[navegacao.tipo_ordenador -1](array->dados, array->tamanho);
