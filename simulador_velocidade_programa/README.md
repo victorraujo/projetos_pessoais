@@ -1,4 +1,4 @@
-# Projeto criado para fins educativos de algoritmos. ainda em progresso.
+# Projeto criado para fins educativos de algoritmos. ainda em progresso
 
 ## última update = 02/11/2026
 
