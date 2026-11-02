@@ -54,30 +54,39 @@ int main(void)
     navegacao_t navegacao;
     sessao_start(&navegacao);
     navegacao.estado_atual = ESTADO_MENU_PRINCIPAL;
-    // APP
+    // APP || ainda em organização.
     while(navegacao.estado_atual == ESTADO_MENU_PRINCIPAL)
     {
-
-        while(navegacao.estado_atual == ESTADO_MENU_SEGUNDARIO)
-        {
-            navegacao.tipo_ordenador = interface_menu_ordenadores();
-
-            meus_ordenadores[navegacao.tipo_ordenador -1](array->dados, array->tamanho);
-
-            while (navegacao.estado_atual == ESTADO_MENU_SEGUNDARIO)
-            {
-                int buscador = interface_menu_buscadores();
-                if (buscador <= SAIR) { break; }
-                if (buscador == 3 ) 
-                { 
-                    interface_organizacao_array(array->dados, array->tamanho); 
-                    continue; 
-                }
-
-                int chave = interface_pedir_chave_buscar();
-                int local = meus_buscador[buscador - 1](chave, array->dados, array->tamanho);
-            }
+        // PRIMEIRA INTERFACE
+        navegacao.tipo_ordenador = interface_menu_ordenadores();
+        if (navegacao.tipo_ordenador == SAIR) 
+        { 
+            navegacao.estado_atual = SAIR;
+            continue;
         }
+
+        navegacao.estado_atual = ESTADO_MENU_SEGUNDARIO;
+        meus_ordenadores[navegacao.tipo_ordenador - 1](array->dados, array->tamanho);
+        // SEGUNDA INTERFACE
+        while(navegacao.estado_atual == ESTADO_MENU_SEGUNDARIO)
+        { 
+            navegacao.tipo_buscador = interface_menu_buscadores();
+            if (navegacao.tipo_buscador == SAIR)
+            {
+                navegacao.estado_atual--;
+                continue;
+            }
+            navegacao.chave_busca = interface_pedir_chave_buscar();
+            navegacao.resultado_posicao = meus_buscador[navegacao.tipo_buscador - 1](navegacao.chave_busca, array->dados, array->tamanho);
+
+            if (navegacao.resultado_posicao < 0)
+            {
+                printf("nao foi possivel.\n");
+            }
+            printf("achei na posicao [%d] o numero [%d]\n", navegacao.resultado_posicao, navegacao.chave_busca);
+
+        }
+        
 
     }
     return 0;
