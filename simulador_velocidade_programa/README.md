@@ -1,3 +1,5 @@
+# Projeto criado para fins educativos de algoritmos. ainda em progresso.
+### última update = 02/11/2026
 
 # Sobre os includes
 ```text
@@ -12,4 +14,10 @@ includes/
 │   └── metrica.h        <-- Structs de tempo/clock e funções de medição
 └── interface/
     └── interface.h      <-- Menus do terminal, prints de tela e entradas
+```
+
+# Sobre os src_clean
+```text
+src_clean são os algoritmos implementado sem alterações para as métricas.
+basicamente você pode reutilizar ela.
 ```

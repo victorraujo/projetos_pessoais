@@ -15,6 +15,7 @@ typedef enum
     ESTADO_SAIR = 0,        // <- sair de algo
     ESTADO_MENU_PRINCIPAL,  // <- estado menu principal (inicial)
     ESTADO_MENU_SEGUNDARIO, // <- estado do menu segundario (segundo menu)
+    
 } estado_app_t; // <- nome oficial
 
 typedef struct

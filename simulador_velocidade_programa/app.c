@@ -58,23 +58,25 @@ int main(void)
     while(navegacao.estado_atual == ESTADO_MENU_PRINCIPAL)
     {
 
-        while(navegacao.estado_atual)
-        navegacao.tipo_ordenador = interface_menu_ordenadores();
-
-        meus_ordenadores[navegacao.tipo_ordenador -1](array->dados, array->tamanho);
-
-        while (navegacao.estado_atual == ESTADO_MENU_SEGUNDARIO)
+        while(navegacao.estado_atual == ESTADO_MENU_SEGUNDARIO)
         {
-            int buscador = interface_menu_buscadores();
-            if (buscador <= SAIR) { break; }
-            if (buscador == 3 ) 
-            { 
-                interface_organizacao_array(array->dados, array->tamanho); 
-                continue; 
-            }
+            navegacao.tipo_ordenador = interface_menu_ordenadores();
 
-            int chave = interface_pedir_chave_buscar();
-            int local = meus_buscador[buscador - 1](chave, array->dados, array->tamanho);
+            meus_ordenadores[navegacao.tipo_ordenador -1](array->dados, array->tamanho);
+
+            while (navegacao.estado_atual == ESTADO_MENU_SEGUNDARIO)
+            {
+                int buscador = interface_menu_buscadores();
+                if (buscador <= SAIR) { break; }
+                if (buscador == 3 ) 
+                { 
+                    interface_organizacao_array(array->dados, array->tamanho); 
+                    continue; 
+                }
+
+                int chave = interface_pedir_chave_buscar();
+                int local = meus_buscador[buscador - 1](chave, array->dados, array->tamanho);
+            }
         }
 
     }
