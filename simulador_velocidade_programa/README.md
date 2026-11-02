@@ -1,7 +1,9 @@
 # Projeto criado para fins educativos de algoritmos. ainda em progresso.
-### última update = 02/11/2026
 
-# Sobre os includes
+## última update = 02/11/2026
+
+### Sobre os includes
+
 ```text
 includes/
 ├── buscadores/
@@ -16,7 +18,8 @@ includes/
     └── interface.h      <-- Menus do terminal, prints de tela e entradas
 ```
 
-# Sobre os src_clean
+### Sobre os src_clean
+
 ```text
 src_clean são os algoritmos implementado sem alterações para as métricas.
 basicamente você pode reutilizar ela.
