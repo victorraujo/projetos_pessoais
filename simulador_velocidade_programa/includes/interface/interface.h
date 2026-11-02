@@ -103,6 +103,9 @@ int interface_pedir_chave_buscar(void)
     return chave;
     
 }
+
+// ainda a ser implementadas...
+
 // Exibe os detalhes e resultados guardados na struct de métricas
 void interface_exibir_metricas(const metricas_t *status, const char *nome_algoritmo);
 
