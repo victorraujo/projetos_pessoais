@@ -85,7 +85,6 @@ int main(void)
             }
             printf("achei na posicao [%d] o numero [%d]\n", navegacao.resultado_posicao, navegacao.chave_busca);
         }
-        
 
     }
     return 0;
