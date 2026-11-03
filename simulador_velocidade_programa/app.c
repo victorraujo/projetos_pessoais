@@ -84,7 +84,6 @@ int main(void)
                 printf("nao foi possivel.\n");
             }
             printf("achei na posicao [%d] o numero [%d]\n", navegacao.resultado_posicao, navegacao.chave_busca);
-
         }
         
 
