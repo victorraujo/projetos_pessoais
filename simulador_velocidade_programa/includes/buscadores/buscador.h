@@ -2,8 +2,18 @@
 #define BUSCADOR_H
 
 #include <stdio.h>
+typedef struct
+{
+    // Dados da busca
+    int alvo;
+    int indice_encontrado;
+    int tamanho;
 
+    // Ponteiros para funções
+    int (*busca_linear)(int, int[], int);
+    int (*busca_binaria)(int, int[], int);
 
+} buscador_t;
 //-------------------BUSCA POR COMPARAÇÕES(simples e lento)-------------------
 int busca_linear(int numero_buscar, int array[], int tamanho)
 {
@@ -49,21 +59,12 @@ int wrapper_busca_binaria(int numero_buscar, int array[], int tamanho)
      return busca_binaria(numero_buscar, array, 0, tamanho - 1);
 }
 
-// 1. Define a "assinatura padrão" que toda função de ordenação vai ter na tabela
-// literalmente um guia de via ponteiro
-typedef int (*FuncaoBuscador)(int numero_buscar, int array[], int tamanho);
 
-//-----------------------CRIAÇÃO PONTEIROS PARA FUNÇÕES-----------------------
-// Criamos um vetor do tipo 'FuncaoOrdenacao' que guarda as nossas funções!
-// Tabela guarda os endereços das funções de 3 parâmetros
-// Declara e inicializa o vetor de funções logo de uma vez:
-
-//  wrapper_busca_linear  = 1
-//  wrapper_busca_binaria = 2
-#define ALINHAR_INDICE -1
-FuncaoBuscador meus_buscador[] = {
-     wrapper_busca_linear,
-     wrapper_busca_binaria
-};
-
+#define NEW_BUSCADOR { \
+    .alvo = 0, \
+    .indice_encontrado = -1, \
+    .tamanho = 0, \
+    .busca_linear = wrapper_busca_linear, \
+    .busca_binaria = wrapper_busca_binaria \
+}
 #endif
